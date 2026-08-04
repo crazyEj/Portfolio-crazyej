@@ -182,29 +182,25 @@
 
   // ---------- laptop ----------
   const laptop = new THREE.Group();
-  laptop.position.y = 0.12;
+  laptop.position.y = 0.32;
   rig.add(laptop);
 
   const metalMat = new THREE.MeshStandardMaterial({ color:0x1b1b1a, roughness:0.35, metalness:0.55 });
 
-  const deckGeo = new THREE.BoxGeometry(2.6, 0.09, 1.7);
-  const deck = new THREE.Mesh(deckGeo, metalMat);
-  deck.position.set(0, -0.72, 0.1);
-  deck.castShadow = true; deck.receiveShadow = true;
-  laptop.add(deck);
-
-  const hingeGeo = new THREE.CylinderGeometry(0.05, 0.05, 2.5, 16);
-  const hinge = new THREE.Mesh(hingeGeo, metalMat);
-  hinge.rotation.z = Math.PI/2;
-  hinge.position.set(0, -0.675, -0.72);
-  laptop.add(hinge);
-
-  const bezelGeo = new THREE.BoxGeometry(2.6, 1.62, 0.07);
+  const bezelGeo = new THREE.BoxGeometry(3.4, 2.0, 0.08);
   const bezel = new THREE.Mesh(bezelGeo, metalMat);
-  bezel.position.set(0, 0.08, -0.78);
-  bezel.rotation.x = -0.08;
+  bezel.position.set(0, 0.18, -0.92);
+  bezel.rotation.x = -0.065;
   bezel.castShadow = true;
+  bezel.receiveShadow = true;
   laptop.add(bezel);
+
+  const supportGeo = new THREE.BoxGeometry(0.4, 0.08, 0.14);
+  const support = new THREE.Mesh(supportGeo, metalMat);
+  support.position.set(0, -0.12, -0.92);
+  support.castShadow = true;
+  support.receiveShadow = true;
+  laptop.add(support);
 
   // canvas-drawn screen texture
   const texCanvas = document.createElement('canvas');
@@ -254,11 +250,11 @@
   const screenTex = new THREE.CanvasTexture(texCanvas);
   drawScreen(false);
   const screenMat = new THREE.MeshBasicMaterial({ map: screenTex });
-  const screenGeo = new THREE.PlaneGeometry(2.36, 1.46);
+  const screenGeo = new THREE.PlaneGeometry(3.0, 1.78);
   const screenMesh = new THREE.Mesh(screenGeo, screenMat);
   screenMesh.name = 'screen';
-  screenMesh.position.set(0, 0.1, -0.744);
-  screenMesh.rotation.x = -0.08;
+  screenMesh.position.set(0, 0.18, -0.924);
+  screenMesh.rotation.x = -0.065;
   laptop.add(screenMesh);
 
   // small camera dot on bezel
