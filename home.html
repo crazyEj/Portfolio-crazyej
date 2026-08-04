@@ -108,8 +108,8 @@
   let aspect = wrap.clientWidth / wrap.clientHeight;
   const baseFov = window.innerWidth < 640 ? 46 : 34;
   const camera = new THREE.PerspectiveCamera(baseFov, aspect, 0.1, 100);
-  camera.position.set(0, 0.9, 6.2);
-  camera.lookAt(0, -0.1, 0);
+  camera.position.set(0, 0.84, 5.2);
+  camera.lookAt(0, 0.2, 0);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -175,14 +175,14 @@
   });
   const rock = new THREE.Mesh(rockGeo, rockMat);
   rock.scale.set(1.5, 0.72, 1.25);
-  rock.position.y = -1.72;
+  rock.position.y = -1.55;
   rock.castShadow = true;
   rock.receiveShadow = true;
   rig.add(rock);
 
   // ---------- laptop ----------
   const laptop = new THREE.Group();
-  laptop.position.y = -0.55;
+  laptop.position.y = 0.12;
   rig.add(laptop);
 
   const metalMat = new THREE.MeshStandardMaterial({ color:0x1b1b1a, roughness:0.35, metalness:0.55 });
@@ -202,7 +202,7 @@
   const bezelGeo = new THREE.BoxGeometry(2.6, 1.62, 0.07);
   const bezel = new THREE.Mesh(bezelGeo, metalMat);
   bezel.position.set(0, 0.08, -0.78);
-  bezel.rotation.x = -0.13;
+  bezel.rotation.x = -0.08;
   bezel.castShadow = true;
   laptop.add(bezel);
 
@@ -258,7 +258,7 @@
   const screenMesh = new THREE.Mesh(screenGeo, screenMat);
   screenMesh.name = 'screen';
   screenMesh.position.set(0, 0.1, -0.744);
-  screenMesh.rotation.x = -0.13;
+  screenMesh.rotation.x = -0.08;
   laptop.add(screenMesh);
 
   // small camera dot on bezel
