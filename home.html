@@ -108,8 +108,8 @@
   let aspect = wrap.clientWidth / wrap.clientHeight;
   const baseFov = window.innerWidth < 640 ? 46 : 34;
   const camera = new THREE.PerspectiveCamera(baseFov, aspect, 0.1, 100);
-  camera.position.set(0, 0.84, 5.2);
-  camera.lookAt(0, 0.2, 0);
+  camera.position.set(0, 0.72, 4.8);
+  camera.lookAt(0, 0.14, 0);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -174,30 +174,30 @@
     color: 0x2f2f2c, flatShading:true, roughness:0.95, metalness:0.05
   });
   const rock = new THREE.Mesh(rockGeo, rockMat);
-  rock.scale.set(1.5, 0.72, 1.25);
-  rock.position.y = -1.55;
+  rock.scale.set(1.7, 0.95, 1.4);
+  rock.position.y = -1.35;
   rock.castShadow = true;
   rock.receiveShadow = true;
   rig.add(rock);
 
   // ---------- laptop ----------
   const laptop = new THREE.Group();
-  laptop.position.y = 0.32;
+  laptop.position.y = 0.72;
   rig.add(laptop);
 
   const metalMat = new THREE.MeshStandardMaterial({ color:0x1b1b1a, roughness:0.35, metalness:0.55 });
 
-  const bezelGeo = new THREE.BoxGeometry(3.4, 2.0, 0.08);
+  const bezelGeo = new THREE.BoxGeometry(3.6, 2.1, 0.06);
   const bezel = new THREE.Mesh(bezelGeo, metalMat);
-  bezel.position.set(0, 0.18, -0.92);
-  bezel.rotation.x = -0.065;
+  bezel.position.set(0, 0.16, -0.94);
+  bezel.rotation.x = -0.035;
   bezel.castShadow = true;
   bezel.receiveShadow = true;
   laptop.add(bezel);
 
-  const supportGeo = new THREE.BoxGeometry(0.4, 0.08, 0.14);
+  const supportGeo = new THREE.BoxGeometry(2.6, 0.05, 0.2);
   const support = new THREE.Mesh(supportGeo, metalMat);
-  support.position.set(0, -0.12, -0.92);
+  support.position.set(0, -0.95, -0.94);
   support.castShadow = true;
   support.receiveShadow = true;
   laptop.add(support);
@@ -250,11 +250,11 @@
   const screenTex = new THREE.CanvasTexture(texCanvas);
   drawScreen(false);
   const screenMat = new THREE.MeshBasicMaterial({ map: screenTex });
-  const screenGeo = new THREE.PlaneGeometry(3.0, 1.78);
+  const screenGeo = new THREE.PlaneGeometry(3.3, 1.95);
   const screenMesh = new THREE.Mesh(screenGeo, screenMat);
   screenMesh.name = 'screen';
-  screenMesh.position.set(0, 0.18, -0.924);
-  screenMesh.rotation.x = -0.065;
+  screenMesh.position.set(0, 0.3, -0.88);
+  screenMesh.rotation.x = -0.035;
   laptop.add(screenMesh);
 
   // small camera dot on bezel
