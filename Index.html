@@ -197,7 +197,7 @@
     <div class="role">COMPUTER SCIENCE STUDENT &nbsp;·&nbsp; DEVELOPER</div>
     <p class="desc">Building thoughtful software and clean, functional interfaces — from data tools to full-stack web apps.</p>
     <div class="links">
-      <a href="#" class="link">VIEW PROJECTS <span>→</span></a>
+      <a href="projects.html" class="link">VIEW PROJECTS <span>→</span></a>
       <a href="#" class="link" id="contactLink">GET IN TOUCH <span>→</span></a>
     </div>
   </div>
@@ -446,6 +446,10 @@
     modalNote.classList.add('show');
     contactForm.querySelector('.modal-submit').textContent = 'Sent ✓';
   });
+
+  if(new URLSearchParams(location.search).get('contact') === '1'){
+    openModal();
+  }
 </script>
 </body>
 </html>
