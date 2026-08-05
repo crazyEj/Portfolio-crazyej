@@ -77,6 +77,94 @@
     pointer-events:none;
   }
 
+  /* ---------------- contact modal ---------------- */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:30;
+    background:rgba(4,4,5,0.75);
+    backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    opacity:0; pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .modal-overlay.open{ opacity:1; pointer-events:all; }
+  .modal-card{
+    width:100%; max-width:440px;
+    background:#0e0e10;
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:16px;
+    padding:38px 34px 32px;
+    position:relative;
+    font-family:'JetBrains Mono', monospace;
+    transform:translateY(14px) scale(0.98);
+    opacity:0;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), opacity .3s ease;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,0.6);
+  }
+  .modal-overlay.open .modal-card{ transform:translateY(0) scale(1); opacity:1; }
+  .modal-close{
+    position:absolute; top:18px; right:18px;
+    width:30px; height:30px; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.15);
+    color:var(--dim); background:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14px; line-height:1;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .modal-close:hover{ border-color:var(--glow-1); color:var(--ink); }
+  .modal-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:24px;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .modal-sub{
+    margin-top:10px;
+    font-size:12px;
+    line-height:1.7;
+    color:var(--dim);
+  }
+  .field{ margin-top:22px; }
+  .field label{
+    display:block;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    color:var(--dim);
+    margin-bottom:8px;
+  }
+  .field input, .field textarea{
+    width:100%;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:8px;
+    padding:12px 13px;
+    color:var(--ink);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    outline:none;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .field textarea{ min-height:90px; resize:vertical; }
+  .field input:focus, .field textarea:focus{
+    border-color:var(--glow-1);
+    background:rgba(255,138,43,0.04);
+  }
+  .modal-submit{
+    margin-top:26px;
+    width:100%;
+    text-align:center;
+    justify-content:center;
+  }
+  .modal-note{
+    margin-top:16px;
+    text-align:center;
+    font-size:11px;
+    color:var(--dim);
+    display:none;
+  }
+  .modal-note.show{ display:block; }
+
   @media (max-width:640px){
     .links{ flex-direction:column; gap:14px; align-items:center; }
     nav{ padding:20px; }
@@ -110,13 +198,37 @@
     <p class="desc">Building thoughtful software and clean, functional interfaces — from data tools to full-stack web apps.</p>
     <div class="links">
       <a href="#" class="link">VIEW PROJECTS <span>→</span></a>
-      <a href="#" class="link">GET IN TOUCH <span>→</span></a>
+      <a href="#" class="link" id="contactLink">GET IN TOUCH <span>→</span></a>
     </div>
   </div>
 
   <div class="hint">
     HOLD TO 🔥 IGNITE<br>
     DRAG ⚡ THE LINES TO PLAY
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-title">Let's Talk</div>
+      <p class="modal-sub">Open to conversations on software projects, data tools, and web development work.</p>
+      <form id="contactForm">
+        <div class="field">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" type="text" required>
+        </div>
+        <div class="field">
+          <label for="cf-email">Email</label>
+          <input id="cf-email" type="email" required>
+        </div>
+        <div class="field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" required></textarea>
+        </div>
+        <button type="submit" class="pill solid modal-submit">Send Message</button>
+        <p class="modal-note" id="modalNote">Thanks — your message is ready to send.</p>
+      </form>
+    </div>
   </div>
 
 <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
@@ -309,6 +421,31 @@
     requestAnimationFrame(loop);
   }
   loop();
+
+  /* ---------------- contact modal ---------------- */
+  const modalOverlay = document.getElementById('modalOverlay');
+  const contactLink = document.getElementById('contactLink');
+  const modalClose = document.getElementById('modalClose');
+  const contactForm = document.getElementById('contactForm');
+  const modalNote = document.getElementById('modalNote');
+
+  function openModal(e){
+    if(e) e.preventDefault();
+    modalOverlay.classList.add('open');
+  }
+  function closeModal(){
+    modalOverlay.classList.remove('open');
+  }
+  contactLink.addEventListener('click', openModal);
+  modalClose.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e=>{ if(e.target === modalOverlay) closeModal(); });
+  addEventListener('keydown', e=>{ if(e.key === 'Escape') closeModal(); });
+
+  contactForm.addEventListener('submit', e=>{
+    e.preventDefault();
+    modalNote.classList.add('show');
+    contactForm.querySelector('.modal-submit').textContent = 'Sent ✓';
+  });
 </script>
 </body>
 </html>
