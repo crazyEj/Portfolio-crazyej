@@ -3,364 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Erick James Sibayan — 3D Portfolio Mockup</title>
+<title>Erick James Sibayan — Portfolio Render</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <style>
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html,body{ height:100%; overflow:hidden; }
-  body{
-    background:#e5e5e5;
-    font-family:'IBM Plex Sans', sans-serif;
-    display:flex; flex-direction:column;
-    cursor:none;
-  }
-  @media (hover:none){ body{ cursor:auto; } }
-
-  .page-header, .page-footer{
-    flex:0 0 auto;
-    text-align:center;
-    font-family:'IBM Plex Mono', monospace;
-    font-weight:600;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:#2a2a28;
-    padding:22px 16px;
-    z-index:5;
-  }
-  .page-header{ font-size:clamp(11px,1.6vw,14px); }
-  .page-footer{ font-size:clamp(9.5px,1.3vw,12px); color:#8a887f; }
-
-  #canvas-wrap{
-    flex:1 1 auto;
-    position:relative;
-    width:100%;
-    min-height:0;
-  }
-  #c{ display:block; width:100%; height:100%; }
-
-  #fadeOverlay{
-    position:fixed; inset:0; background:#0a0a09; opacity:0;
-    pointer-events:none; z-index:40;
-  }
-
-  .cursor-dot, .cursor-ring{
-    position:fixed; top:0; left:0; pointer-events:none; z-index:50;
-    border-radius:50%; transform:translate(-50%,-50%);
-  }
-  .cursor-dot{ width:6px; height:6px; background:#14140f; }
-  .cursor-ring{
-    width:32px; height:32px; border:1px solid rgba(20,20,15,0.45);
-    display:flex; align-items:center; justify-content:center;
-    transition:width 0.28s ease, height 0.28s ease, background 0.28s ease, border-color 0.28s ease;
-  }
-  .cursor-ring.hot{
-    width:96px; height:96px;
-    background:#14140f; border-color:transparent;
-  }
-  .cursor-ring .lbl{
-    opacity:0; transition:opacity 0.2s ease;
-    font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:600;
-    letter-spacing:0.08em; text-transform:uppercase; color:#f6f4ef; text-align:center;
-    white-space:nowrap;
-  }
-  .cursor-ring.hot .lbl{ opacity:1; }
-
-  .loading{
-    position:fixed; inset:0; background:#e5e5e5; z-index:60;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
-    color:#8a887f; text-transform:uppercase;
-    transition:opacity 0.5s ease;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; height:100%; overflow:hidden; }
+  body { background: linear-gradient(180deg, #dee0dd 0%, #f5f5f3 100%); font-family:'IBM Plex Sans', sans-serif; }
+  #c { display:block; width:100%; height:100%; }
 </style>
 </head>
 <body>
-
-<div class="loading" id="loading">Loading scene…</div>
-
-<header class="page-header">Erick James Sibayan — Portfolio</header>
-
-<div id="canvas-wrap">
-  <canvas id="c"></canvas>
-</div>
-
-<footer class="page-footer">Move to explore · Click the screen to view work</footer>
-
-<div id="fadeOverlay"></div>
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"><span class="lbl">Click to<br>View</span></div>
-
+<canvas id="c"></canvas>
 <script>
 (function(){
-  const wrap = document.getElementById('canvas-wrap');
   const canvas = document.getElementById('c');
-  const loading = document.getElementById('loading');
-
-  // ---------- scene ----------
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xe5e5e5);
-  scene.fog = new THREE.Fog(0xe5e5e5, 8, 16);
+  scene.background = new THREE.Color(0xe2e1dc);
 
-  let aspect = wrap.clientWidth / wrap.clientHeight;
-  const baseFov = window.innerWidth < 640 ? 46 : 34;
-  const camera = new THREE.PerspectiveCamera(baseFov, aspect, 0.1, 100);
-  camera.position.set(0, 0.72, 4.8);
-  camera.lookAt(0, 0.14, 0);
+  const camera = new THREE.PerspectiveCamera(window.innerWidth < 640 ? 48 : 32, window.innerWidth/window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0.9, 5.2);
+  camera.lookAt(0, 0.15, 0);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-  function sizeRenderer(){
-    const w = wrap.clientWidth, h = wrap.clientHeight;
-    renderer.setSize(w, h, false);
+  function resize(){
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    renderer.setSize(w, h);
     camera.aspect = w / h;
-    camera.fov = window.innerWidth < 640 ? 46 : 34;
+    camera.fov = window.innerWidth < 640 ? 48 : 32;
     camera.updateProjectionMatrix();
   }
-  sizeRenderer();
+  resize();
+  window.addEventListener('resize', resize);
 
-  // ---------- lighting ----------
-  const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+  const ambient = new THREE.AmbientLight(0xffffff, 0.45);
   scene.add(ambient);
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.55);
-  dirLight.position.set(3, 6, 4);
-  dirLight.castShadow = true;
-  dirLight.shadow.mapSize.set(1024, 1024);
-  scene.add(dirLight);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  keyLight.position.set(-2.4, 3.6, 2.8);
+  keyLight.castShadow = true;
+  keyLight.shadow.mapSize.set(2048, 2048);
+  scene.add(keyLight);
 
-  const spot = new THREE.SpotLight(0xffffff, 1.4, 14, Math.PI/6, 0.5, 1.2);
-  spot.position.set(0, 4, 3);
-  spot.castShadow = true;
-  scene.add(spot);
-  scene.add(spot.target);
+  const fillLight = new THREE.DirectionalLight(0xdedede, 0.32);
+  fillLight.position.set(2.4, 1.8, -2.4);
+  scene.add(fillLight);
 
-  const rimLight = new THREE.PointLight(0xbfd9ff, 0.4, 10);
-  rimLight.position.set(-3, 1.5, -2);
+  const rimLight = new THREE.PointLight(0xcfd6e2, 0.22, 10);
+  rimLight.position.set(-1.8, 2.2, -2.1);
   scene.add(rimLight);
 
-  // ---------- ground shadow catcher ----------
-  const groundGeo = new THREE.PlaneGeometry(30, 30);
-  const groundMat = new THREE.ShadowMaterial({ opacity:0.16 });
-  const ground = new THREE.Mesh(groundGeo, groundMat);
-  ground.rotation.x = -Math.PI/2;
-  ground.position.y = -2.05;
-  ground.receiveShadow = true;
-  scene.add(ground);
+  const shadowPlane = new THREE.PlaneGeometry(30, 30);
+  const shadowMat = new THREE.ShadowMaterial({ opacity:0.14 });
+  const shadowMesh = new THREE.Mesh(shadowPlane, shadowMat);
+  shadowMesh.rotation.x = -Math.PI / 2;
+  shadowMesh.position.y = -1.8;
+  shadowMesh.receiveShadow = true;
+  scene.add(shadowMesh);
 
-  // ---------- rig (rock + laptop tilt together) ----------
-  const rig = new THREE.Group();
-  scene.add(rig);
-
-  // low-poly volcanic rock pedestal
-  const rockGeo = new THREE.IcosahedronGeometry(1.7, 1);
+  const rockGeo = new THREE.IcosahedronGeometry(1.9, 1);
   const posAttr = rockGeo.attributes.position;
-  const v = new THREE.Vector3();
+  const temp = new THREE.Vector3();
   for(let i=0; i<posAttr.count; i++){
-    v.fromBufferAttribute(posAttr, i);
-    const n = v.clone().normalize();
-    const disp = (Math.random() - 0.35) * 0.34;
-    v.addScaledVector(n, disp);
-    posAttr.setXYZ(i, v.x, v.y, v.z);
+    temp.fromBufferAttribute(posAttr, i);
+    const normal = temp.clone().normalize();
+    const offset = (Math.random() - 0.35) * 0.45;
+    temp.addScaledVector(normal, offset);
+    posAttr.setXYZ(i, temp.x, temp.y, temp.z);
   }
   rockGeo.computeVertexNormals();
-  const rockMat = new THREE.MeshStandardMaterial({
-    color: 0x2f2f2c, flatShading:true, roughness:0.95, metalness:0.05
-  });
+
+  const rockMat = new THREE.MeshStandardMaterial({ color:0x1c1c1c, roughness:0.92, metalness:0.05 });
   const rock = new THREE.Mesh(rockGeo, rockMat);
-  rock.scale.set(1.7, 0.95, 1.4);
-  rock.position.y = -1.35;
+  rock.scale.set(1.6, 1.0, 1.6);
+  rock.position.set(0, -1.2, 0);
   rock.castShadow = true;
   rock.receiveShadow = true;
-  rig.add(rock);
+  scene.add(rock);
 
-  // ---------- laptop ----------
-  const laptop = new THREE.Group();
-  laptop.position.y = 0.72;
-  rig.add(laptop);
+  const monitor = new THREE.Group();
+  monitor.position.set(0, -0.12, 0);
+  scene.add(monitor);
 
-  const metalMat = new THREE.MeshStandardMaterial({ color:0x1b1b1a, roughness:0.35, metalness:0.55 });
+  const frameMat = new THREE.MeshStandardMaterial({ color:0x1f1f1f, roughness:0.28, metalness:0.58 });
+  const frameGeo = new THREE.BoxGeometry(3.5, 2.15, 0.08);
+  const frame = new THREE.Mesh(frameGeo, frameMat);
+  frame.position.set(0, 0.92, 0);
+  frame.castShadow = true;
+  frame.receiveShadow = true;
+  monitor.add(frame);
 
-  const bezelGeo = new THREE.BoxGeometry(3.6, 2.1, 0.06);
-  const bezel = new THREE.Mesh(bezelGeo, metalMat);
-  bezel.position.set(0, 0.16, -0.94);
-  bezel.rotation.x = -0.035;
-  bezel.castShadow = true;
-  bezel.receiveShadow = true;
-  laptop.add(bezel);
+  const screenCanvas = document.createElement('canvas');
+  screenCanvas.width = 2048;
+  screenCanvas.height = 1280;
+  const ctx = screenCanvas.getContext('2d');
 
-  const supportGeo = new THREE.BoxGeometry(2.6, 0.05, 0.2);
-  const support = new THREE.Mesh(supportGeo, metalMat);
-  support.position.set(0, -0.95, -0.94);
+  function drawScreen(){
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, screenCanvas.width, screenCanvas.height);
+
+    ctx.fillStyle = '#111111';
+    ctx.textAlign = 'center';
+    ctx.font = '600 36px IBM Plex Sans';
+    ctx.fillText('HOME', 300, 72);
+    ctx.fillText('ABOUT', 640, 72);
+    ctx.fillText('PROJECTS', 1020, 72);
+    ctx.fillText('CONTACT', 1400, 72);
+
+    ctx.font = '800 108px IBM Plex Sans';
+    ctx.fillText('ERICK JAMES', screenCanvas.width / 2, 520);
+    ctx.fillText('SIBAYAN', screenCanvas.width / 2, 650);
+
+    ctx.font = '500 22px IBM Plex Mono';
+    ctx.textAlign = 'left';
+    ctx.fillText('A refined portfolio experience with modern layout, bold typography, and minimalist style.', 180, 1140);
+    ctx.fillText('Studio • Work • Contact', 180, 1195);
+    ctx.textAlign = 'right';
+    ctx.fillText('2026 • Erick James Sibayan', screenCanvas.width - 180, 1195);
+  }
+  drawScreen();
+
+  const screenTexture = new THREE.CanvasTexture(screenCanvas);
+  screenTexture.encoding = THREE.sRGBEncoding;
+  screenTexture.needsUpdate = true;
+
+  const screenMat = new THREE.MeshBasicMaterial({ map: screenTexture });
+  const screenGeo = new THREE.PlaneGeometry(3.12, 1.82);
+  const screen = new THREE.Mesh(screenGeo, screenMat);
+  screen.position.set(0, 0.92, 0.07);
+  monitor.add(screen);
+
+  const supportGeo = new THREE.BoxGeometry(2.3, 0.05, 0.18);
+  const support = new THREE.Mesh(supportGeo, frameMat);
+  support.position.set(0, 0.62, 0);
   support.castShadow = true;
   support.receiveShadow = true;
-  laptop.add(support);
+  monitor.add(support);
 
-  // canvas-drawn screen texture
-  const texCanvas = document.createElement('canvas');
-  texCanvas.width = 1024; texCanvas.height = 640;
-  const ctx = texCanvas.getContext('2d');
+  const dotGeo = new THREE.CircleGeometry(0.02, 20);
+  const dot = new THREE.Mesh(dotGeo, new THREE.MeshBasicMaterial({ color: 0x0b0b0b }));
+  dot.position.set(0, 1.02, 0.07);
+  dot.rotation.x = -0.02;
+  monitor.add(dot);
 
-  function roundRect(c, x, y, w, h, r){
-    c.beginPath();
-    c.moveTo(x+r, y);
-    c.arcTo(x+w, y, x+w, y+h, r);
-    c.arcTo(x+w, y+h, x, y+h, r);
-    c.arcTo(x, y+h, x, y, r);
-    c.arcTo(x, y, x+w, y, r);
-    c.closePath();
-  }
-
-  function drawScreen(hot){
-    ctx.fillStyle = '#f6f4ef';
-    ctx.fillRect(0, 0, 1024, 640);
-
-    ctx.fillStyle = '#14140f';
-    ctx.textBaseline = 'top';
-    ctx.textAlign = 'left';
-    ctx.font = '600 20px IBM Plex Sans, sans-serif';
-    ctx.fillText('ABOUT', 44, 40);
-    ctx.fillText('PROJECTS', 168, 40);
-    ctx.fillText('CONTACT', 336, 40);
-
-    ctx.textAlign = 'center';
-    ctx.font = '800 78px IBM Plex Sans, sans-serif';
-    ctx.fillText('ERICK JAMES', 512, 250);
-    ctx.fillText('SIBAYAN', 512, 336);
-
-    const pillW = 250, pillH = 58, pillX = 512 - pillW/2, pillY = 440;
-    ctx.strokeStyle = hot ? '#14140f' : '#8a887f';
-    ctx.lineWidth = 2.2;
-    if(hot){ ctx.fillStyle = '#14140f'; roundRect(ctx, pillX, pillY, pillW, pillH, 29); ctx.fill(); }
-    else{ roundRect(ctx, pillX, pillY, pillW, pillH, 29); ctx.stroke(); }
-
-    ctx.fillStyle = hot ? '#f6f4ef' : '#14140f';
-    ctx.font = '600 17px IBM Plex Mono, monospace';
-    ctx.fillText('VIEW WORK  →', 512, pillY + pillH/2 - 8);
-
-    screenTex.needsUpdate = true;
-  }
-
-  const screenTex = new THREE.CanvasTexture(texCanvas);
-  drawScreen(false);
-  const screenMat = new THREE.MeshBasicMaterial({ map: screenTex });
-  const screenGeo = new THREE.PlaneGeometry(3.3, 1.95);
-  const screenMesh = new THREE.Mesh(screenGeo, screenMat);
-  screenMesh.name = 'screen';
-  screenMesh.position.set(0, 0.3, -0.88);
-  screenMesh.rotation.x = -0.035;
-  laptop.add(screenMesh);
-
-  // small camera dot on bezel
-  const camDotGeo = new THREE.CircleGeometry(0.018, 12);
-  const camDotMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-  const camDot = new THREE.Mesh(camDotGeo, camDotMat);
-  camDot.position.set(0, 0.865, -0.742);
-  camDot.rotation.x = -0.13;
-  laptop.add(camDot);
-
-  // ---------- pointer tracking / parallax tilt ----------
-  const cursorDot = document.getElementById('cursorDot');
-  const cursorRing = document.getElementById('cursorRing');
-  const fadeOverlay = document.getElementById('fadeOverlay');
-
-  const rigTiltX = gsap.quickTo(rig.rotation, 'x', { duration:0.9, ease:'power3.out' });
-  const rigTiltY = gsap.quickTo(rig.rotation, 'y', { duration:0.9, ease:'power3.out' });
-  const spotX = gsap.quickTo(spot.position, 'x', { duration:0.5, ease:'power2.out' });
-  const spotZ = gsap.quickTo(spot.position, 'z', { duration:0.5, ease:'power2.out' });
-
-  const raycaster = new THREE.Raycaster();
-  const ndc = new THREE.Vector2();
-  let hovering = false;
-  let navigating = false;
-
-  function updateHover(clientX, clientY){
-    const rect = canvas.getBoundingClientRect();
-    if(clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom){
-      setHover(false);
-      return;
-    }
-    ndc.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-    ndc.y = -(((clientY - rect.top) / rect.height) * 2 - 1);
-    raycaster.setFromCamera(ndc, camera);
-    const hit = raycaster.intersectObject(screenMesh, false).length > 0;
-    setHover(hit);
-  }
-
-  function setHover(hit){
-    if(hit === hovering) return;
-    hovering = hit;
-    cursorRing.classList.toggle('hot', hit);
-    drawScreen(hit);
-  }
-
-  function onPointerMove(e){
-    const cx = e.clientX, cy = e.clientY;
-    cursorDot.style.left = cx + 'px';
-    cursorDot.style.top = cy + 'px';
-    cursorRing.style.left = cx + 'px';
-    cursorRing.style.top = cy + 'px';
-
-    const nx = (cx / window.innerWidth) * 2 - 1;
-    const ny = (cy / window.innerHeight) * 2 - 1;
-    rigTiltY(nx * 0.32);
-    rigTiltX(ny * 0.14);
-    spotX(nx * 3.2);
-    spotZ(3 + ny * 1.4);
-
-    updateHover(cx, cy);
-  }
-  window.addEventListener('pointermove', onPointerMove);
-  window.addEventListener('pointerleave', () => setHover(false));
-
-  function onClick(e){
-    if(navigating) return;
-    const rect = canvas.getBoundingClientRect();
-    if(e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) return;
-    ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    ndc.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-    raycaster.setFromCamera(ndc, camera);
-    if(raycaster.intersectObject(screenMesh, false).length === 0) return;
-
-    navigating = true;
-    const tl = gsap.timeline({
-      onComplete: () => { window.location.href = 'portfolio.html'; }
-    });
-    tl.to(rig.rotation, { x:0, y:0, duration:0.5, ease:'power2.out' }, 0)
-      .to(camera.position, { x:0, y:0.15, z:1.55, duration:1.15, ease:'power3.inOut' }, 0)
-      .to(camera, {
-        fov: 20, duration:1.15, ease:'power3.inOut',
-        onUpdate: () => camera.updateProjectionMatrix()
-      }, 0)
-      .to(fadeOverlay, { opacity:1, duration:0.55, ease:'power1.in' }, '-=0.4');
-  }
-  window.addEventListener('click', onClick);
-
-  // ---------- resize ----------
-  window.addEventListener('resize', sizeRenderer);
-
-  // ---------- render loop ----------
   const clock = new THREE.Clock();
-  function tick(){
+  function render(){
     const t = clock.getElapsedTime();
-    rock.rotation.y = Math.sin(t * 0.05) * 0.02;
+    rock.rotation.y = Math.sin(t * 0.04) * 0.04;
     renderer.render(scene, camera);
-    requestAnimationFrame(tick);
+    requestAnimationFrame(render);
   }
-  tick();
-
-  requestAnimationFrame(() => {
-    loading.style.opacity = '0';
-    setTimeout(() => loading.style.display = 'none', 500);
-  });
+  render();
 })();
 </script>
-
 </body>
 </html>
