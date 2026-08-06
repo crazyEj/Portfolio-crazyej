@@ -50,11 +50,12 @@
     padding:10px 18px; border-radius:30px; cursor:pointer;
     border:1px solid rgba(255,255,255,0.18); background:transparent; color:var(--ink);
     text-decoration:none;
-    transition:border-color .25s ease, background .25s ease;
+    transition:border-color .25s ease, background .25s ease, transform .15s ease;
+    will-change:transform;
   }
-  .pill:hover{ border-color:rgba(255,255,255,0.4); }
+  .pill:hover{ border-color:rgba(255,138,43,0.5); }
   .pill.solid{ background:var(--ink); color:#0a0a0a; border:none; }
-  .pill.solid:hover{ background:#d9d6cc; }
+  .pill.solid:hover{ background:#ffd39a; }
 
   main{ position:relative; z-index:3; max-width:960px; margin:0 auto; padding:60px 34px 120px; }
 
@@ -72,7 +73,10 @@
   .section-label{
     font-size:11px; letter-spacing:0.18em; color:var(--dimmer);
     display:flex; align-items:center; gap:14px; margin-bottom:34px;
+    opacity:0; transform:translateX(-14px);
   }
+  .section-label.in-view{ animation:slideIn .5s ease forwards; }
+  @keyframes slideIn{ to{ opacity:1; transform:translateX(0); } }
   .section-label::after{ content:""; flex:1; height:1px; background:var(--hair); }
 
   .grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:18px; }
@@ -83,39 +87,81 @@
     border:1px solid var(--hair);
     border-radius:14px;
     padding:26px 24px;
-    transition:border-color .25s ease, transform .25s ease;
+    transition:border-color .3s ease, transform .15s ease, box-shadow .3s ease;
     display:flex; flex-direction:column;
+    position:relative;
+    overflow:hidden;
+    transform-style:preserve-3d;
+    will-change:transform;
+    opacity:0;
+    transform:translateY(24px);
   }
-  .card:hover{ border-color:rgba(255,138,43,0.4); transform:translateY(-3px); }
-  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .card.in-view{ animation:riseIn .6s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), rgba(255,138,43,0.13), transparent 65%);
+    opacity:0;
+    transition:opacity .3s ease;
+    pointer-events:none;
+  }
+  .card:hover::before{ opacity:1; }
+  .card:hover{
+    border-color:rgba(255,138,43,0.45);
+    box-shadow:0 24px 50px -20px rgba(255,138,43,0.15), 0 0 0 1px rgba(255,138,43,0.08);
+  }
+  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; position:relative; z-index:1; }
   .card-title{
     font-family:'Space Grotesk', sans-serif;
     font-weight:700;
     font-size:18px;
     letter-spacing:-0.01em;
+    transition:color .25s ease;
   }
-  .card-role{ margin-top:4px; font-size:10.5px; color:var(--glow-1); letter-spacing:0.06em; }
-  .card-desc{ margin-top:14px; font-size:12px; line-height:1.7; color:var(--dim); flex:1; }
-  .tags{ margin-top:16px; display:flex; flex-wrap:wrap; gap:7px; }
+  .card:hover .card-title{ color:var(--glow-2); }
+  .card-role{ margin-top:4px; font-size:10.5px; color:var(--glow-1); letter-spacing:0.06em; position:relative; z-index:1; }
+  .card-desc{ margin-top:14px; font-size:12px; line-height:1.7; color:var(--dim); flex:1; position:relative; z-index:1; }
+  .tags{ margin-top:16px; display:flex; flex-wrap:wrap; gap:7px; position:relative; z-index:1; }
   .tag{
     font-size:10px; letter-spacing:0.04em; color:var(--dim);
     border:1px solid var(--hair); border-radius:20px; padding:4px 10px;
+    transition:border-color .2s ease, color .2s ease, transform .2s ease;
   }
+  .tag:hover{ border-color:rgba(255,138,43,0.5); color:var(--ink); transform:translateY(-1px); }
   .card-link{
     margin-top:18px; display:inline-flex; align-items:center; gap:7px;
     font-size:11px; letter-spacing:0.08em; font-weight:600; text-decoration:none; color:var(--ink);
     border-bottom:1px solid rgba(255,255,255,0.3); padding-bottom:4px; width:fit-content;
     transition:opacity .2s ease, border-color .2s ease;
+    position:relative; z-index:1;
   }
-  .card-link:hover{ opacity:0.65; border-color:var(--glow-1); }
+  .card-link span{ display:inline-block; transition:transform .25s ease; }
+  .card-link:hover{ opacity:0.9; border-color:var(--glow-1); }
+  .card-link:hover span{ transform:translateX(4px); }
 
   .timeline{ display:flex; flex-direction:column; gap:0; }
   .tl-item{
     display:grid; grid-template-columns:130px 1fr; gap:24px;
-    padding:24px 0; border-bottom:1px solid var(--hair);
+    padding:24px 20px; border-bottom:1px solid var(--hair);
+    position:relative;
+    transition:padding-left .3s ease, background .3s ease;
+    opacity:0; transform:translateY(18px);
   }
+  .tl-item.in-view{ animation:riseIn .6s cubic-bezier(.2,.7,.2,1) forwards; }
+  .tl-item::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:2px;
+    background:linear-gradient(180deg, var(--glow-1), transparent);
+    transform:scaleY(0); transform-origin:top;
+    transition:transform .35s ease;
+  }
+  .tl-item:hover::before{ transform:scaleY(1); }
+  .tl-item:hover{ padding-left:32px; background:rgba(255,138,43,0.03); }
   .tl-item:last-child{ border-bottom:none; }
-  .tl-date{ font-size:10.5px; letter-spacing:0.08em; color:var(--dimmer); padding-top:2px; }
+  .tl-date{ font-size:10.5px; letter-spacing:0.08em; color:var(--dimmer); padding-top:2px; transition:color .3s ease; }
+  .tl-item:hover .tl-date{ color:var(--glow-1); }
   .tl-role{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px; }
   .tl-org{ margin-top:2px; font-size:11px; color:var(--glow-1); letter-spacing:0.04em; }
   .tl-desc{ margin-top:10px; font-size:12px; line-height:1.7; color:var(--dim); max-width:560px; }
@@ -283,9 +329,11 @@
   </footer>
 
 <script>
+  /* ---------------- interactive background lines ---------------- */
   const linesCanvas = document.getElementById('lines');
   const ctx = linesCanvas.getContext('2d');
   let W = innerWidth, H = document.documentElement.scrollHeight;
+  const mouse = {x:-9999, y:-9999};
   function resize(){ W = innerWidth; H = Math.max(document.documentElement.scrollHeight, innerHeight); linesCanvas.width = W; linesCanvas.height = H; }
   resize();
   addEventListener('resize', resize);
@@ -302,21 +350,88 @@
   }
   for(let i=0;i<NUM;i++){
     const a = edgePoint(), b = edgePoint();
-    lines.push({x1:a.x,y1:a.y,x2:b.x,y2:b.y});
+    lines.push({x1:a.x,y1:a.y,x2:b.x,y2:b.y, bx:0, by:0, tx:0, ty:0});
+  }
+  addEventListener('mousemove', e=>{ mouse.x = e.pageX; mouse.y = e.pageY; });
+  addEventListener('mouseleave', ()=>{ mouse.x=-9999; mouse.y=-9999; });
+
+  function distToSegment(px,py,x1,y1,x2,y2){
+    const dx=x2-x1, dy=y2-y1;
+    const len2 = dx*dx+dy*dy || 1;
+    let t = ((px-x1)*dx + (py-y1)*dy) / len2;
+    t = Math.max(0, Math.min(1, t));
+    const cx = x1 + t*dx, cy = y1 + t*dy;
+    return {d:Math.hypot(px-cx, py-cy), cx, cy};
   }
   function draw(){
     ctx.clearRect(0,0,W,H);
-    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-    ctx.lineWidth = 1;
     lines.forEach(l=>{
+      const mx=(l.x1+l.x2)/2, my=(l.y1+l.y2)/2;
+      const res = distToSegment(mouse.x, mouse.y, l.x1, l.y1, l.x2, l.y2);
+      const radius = 170;
+      let near = false;
+      if(res.d < radius){
+        near = true;
+        const force = (1 - res.d/radius) * 46;
+        const nx = -(l.y2-l.y1), ny = (l.x2-l.x1);
+        const nlen = Math.hypot(nx,ny) || 1;
+        const dirSign = ((mouse.x-res.cx)*nx/nlen + (mouse.y-res.cy)*ny/nlen) < 0 ? 1 : -1;
+        l.tx = (nx/nlen) * force * dirSign;
+        l.ty = (ny/nlen) * force * dirSign;
+      } else { l.tx = 0; l.ty = 0; }
+      l.bx += (l.tx - l.bx) * 0.08;
+      l.by += (l.ty - l.by) * 0.08;
+      const cx = mx + l.bx, cy = my + l.by;
+      ctx.strokeStyle = near ? 'rgba(255,150,60,0.22)' : 'rgba(255,255,255,0.05)';
+      ctx.lineWidth = near ? 1.2 : 1;
       ctx.beginPath();
-      ctx.moveTo(l.x1,l.y1);
-      ctx.lineTo(l.x2,l.y2);
+      ctx.moveTo(l.x1, l.y1);
+      ctx.quadraticCurveTo(cx, cy, l.x2, l.y2);
       ctx.stroke();
     });
+    requestAnimationFrame(draw);
   }
   draw();
-  addEventListener('resize', draw);
+
+  /* ---------------- card tilt + cursor spotlight ---------------- */
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--mx', (px*100)+'%');
+      card.style.setProperty('--my', (py*100)+'%');
+      const rx = (py - 0.5) * -8;
+      const ry = (px - 0.5) * 10;
+      card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', ()=>{
+      card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
+    });
+  });
+
+  /* ---------------- magnetic buttons ---------------- */
+  document.querySelectorAll('.pill').forEach(btn=>{
+    btn.addEventListener('mousemove', e=>{
+      const r = btn.getBoundingClientRect();
+      const mx = e.clientX - (r.left + r.width/2);
+      const my = e.clientY - (r.top + r.height/2);
+      btn.style.transform = `translate(${mx*0.25}px, ${my*0.35}px)`;
+    });
+    btn.addEventListener('mouseleave', ()=>{ btn.style.transform = 'translate(0,0)'; });
+  });
+
+  /* ---------------- scroll reveal ---------------- */
+  const revealTargets = document.querySelectorAll('.card, .tl-item, .section-label');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach((entry, i)=>{
+      if(entry.isIntersecting){
+        setTimeout(()=> entry.target.classList.add('in-view'), i*40);
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  revealTargets.forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
