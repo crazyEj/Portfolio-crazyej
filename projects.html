@@ -1,185 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Projects & Experience — Erick James Sibayan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#08080a;
-    --card:#0e0e10;
-    --ink:#f3f1ec;
-    --dim:#8b887f;
-    --dimmer:#514f49;
-    --glow-1:#ff8a2b;
-    --glow-2:#ffd39a;
-    --hair:rgba(255,255,255,0.09);
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{ scroll-behavior:smooth; }
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'JetBrains Mono', monospace;
-    min-height:100%;
-    position:relative;
-  }
-  a{ color:inherit; }
-  canvas#lines{ position:fixed; inset:0; z-index:0; }
-  .vignette{
-    position:fixed; inset:0; z-index:1; pointer-events:none;
-    background:radial-gradient(120% 90% at 50% 0%, transparent 45%, rgba(0,0,0,0.6) 100%);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects & Experience — Erick James Sibayan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08080a;
+      --card: #0e0e10;
+      --ink: #f3f1ec;
+      --dim: #8b887f;
+      --dimmer: #514f49;
+      --glow-1: #ff8a2b;
+      --glow-2: #ffd39a;
+      --hair: rgba(255, 255, 255, 0.09);
+    }
 
-  nav{
-    position:sticky; top:0; z-index:10;
-    display:flex; justify-content:space-between; align-items:center;
-    padding:26px 34px;
-    background:linear-gradient(180deg, rgba(8,8,10,0.9) 0%, rgba(8,8,10,0.7) 70%, transparent 100%);
-    backdrop-filter:blur(6px);
-  }
-  .logo{ display:flex; align-items:center; gap:9px; font-size:13px; letter-spacing:0.08em; font-weight:600; color:var(--ink); text-decoration:none; }
-  .logo sup{ font-size:8px; opacity:0.6; }
-  .nav-right{ display:flex; align-items:center; gap:10px; }
-  .pill{
-    display:inline-flex; align-items:center; gap:7px;
-    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.09em; font-weight:500;
-    padding:10px 18px; border-radius:30px; cursor:pointer;
-    border:1px solid rgba(255,255,255,0.18); background:transparent; color:var(--ink);
-    text-decoration:none;
-    transition:border-color .25s ease, background .25s ease, transform .15s ease;
-    will-change:transform;
-  }
-  .pill:hover{ border-color:rgba(255,138,43,0.5); }
-  .pill.solid{ background:var(--ink); color:#0a0a0a; border:none; }
-  .pill.solid:hover{ background:#ffd39a; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  main{ position:relative; z-index:3; max-width:960px; margin:0 auto; padding:60px 34px 120px; }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  .page-head{ text-align:center; margin-bottom:70px; }
-  .eyebrow{ font-size:11px; letter-spacing:0.22em; color:var(--glow-1); margin-bottom:14px; }
-  .page-title{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:700;
-    font-size:clamp(34px, 6vw, 58px);
-    letter-spacing:-0.02em;
-  }
-  .page-sub{ margin-top:14px; color:var(--dim); font-size:13px; line-height:1.7; max-width:520px; margin-left:auto; margin-right:auto; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100%;
+      position: relative;
+    }
 
-  section{ margin-top:90px; }
-  .section-label{
-    font-size:11px; letter-spacing:0.18em; color:var(--dimmer);
-    display:flex; align-items:center; gap:14px; margin-bottom:34px;
-    opacity:0; transform:translateX(-14px);
-  }
-  .section-label.in-view{ animation:slideIn .5s ease forwards; }
-  @keyframes slideIn{ to{ opacity:1; transform:translateX(0); } }
-  .section-label::after{ content:""; flex:1; height:1px; background:var(--hair); }
+    a {
+      color: inherit;
+    }
 
-  .grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:18px; }
-  @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
+    canvas#lines {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
 
-  .card{
-    background:var(--card);
-    border:1px solid var(--hair);
-    border-radius:14px;
-    padding:26px 24px;
-    transition:border-color .3s ease, transform .15s ease, box-shadow .3s ease;
-    display:flex; flex-direction:column;
-    position:relative;
-    overflow:hidden;
-    transform-style:preserve-3d;
-    will-change:transform;
-    opacity:0;
-    transform:translateY(24px);
-  }
-  .card.in-view{ animation:riseIn .6s cubic-bezier(.2,.7,.2,1) forwards; }
-  @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
-  .card::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), rgba(255,138,43,0.13), transparent 65%);
-    opacity:0;
-    transition:opacity .3s ease;
-    pointer-events:none;
-  }
-  .card:hover::before{ opacity:1; }
-  .card:hover{
-    border-color:rgba(255,138,43,0.45);
-    box-shadow:0 24px 50px -20px rgba(255,138,43,0.15), 0 0 0 1px rgba(255,138,43,0.08);
-  }
-  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; position:relative; z-index:1; }
-  .card-title{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:700;
-    font-size:18px;
-    letter-spacing:-0.01em;
-    transition:color .25s ease;
-  }
-  .card:hover .card-title{ color:var(--glow-2); }
-  .card-role{ margin-top:4px; font-size:10.5px; color:var(--glow-1); letter-spacing:0.06em; position:relative; z-index:1; }
-  .card-desc{ margin-top:14px; font-size:12px; line-height:1.7; color:var(--dim); flex:1; position:relative; z-index:1; }
-  .tags{ margin-top:16px; display:flex; flex-wrap:wrap; gap:7px; position:relative; z-index:1; }
-  .tag{
-    font-size:10px; letter-spacing:0.04em; color:var(--dim);
-    border:1px solid var(--hair); border-radius:20px; padding:4px 10px;
-    transition:border-color .2s ease, color .2s ease, transform .2s ease;
-  }
-  .tag:hover{ border-color:rgba(255,138,43,0.5); color:var(--ink); transform:translateY(-1px); }
-  .card-link{
-    margin-top:18px; display:inline-flex; align-items:center; gap:7px;
-    font-size:11px; letter-spacing:0.08em; font-weight:600; text-decoration:none; color:var(--ink);
-    border-bottom:1px solid rgba(255,255,255,0.3); padding-bottom:4px; width:fit-content;
-    transition:opacity .2s ease, border-color .2s ease;
-    position:relative; z-index:1;
-  }
-  .card-link span{ display:inline-block; transition:transform .25s ease; }
-  .card-link:hover{ opacity:0.9; border-color:var(--glow-1); }
-  .card-link:hover span{ transform:translateX(4px); }
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(120% 90% at 50% 0%, transparent 45%, rgba(0, 0, 0, 0.6) 100%);
+    }
 
-  .timeline{ display:flex; flex-direction:column; gap:0; }
-  .tl-item{
-    display:grid; grid-template-columns:130px 1fr; gap:24px;
-    padding:24px 20px; border-bottom:1px solid var(--hair);
-    position:relative;
-    transition:padding-left .3s ease, background .3s ease;
-    opacity:0; transform:translateY(18px);
-  }
-  .tl-item.in-view{ animation:riseIn .6s cubic-bezier(.2,.7,.2,1) forwards; }
-  .tl-item::before{
-    content:"";
-    position:absolute; left:0; top:0; bottom:0; width:2px;
-    background:linear-gradient(180deg, var(--glow-1), transparent);
-    transform:scaleY(0); transform-origin:top;
-    transition:transform .35s ease;
-  }
-  .tl-item:hover::before{ transform:scaleY(1); }
-  .tl-item:hover{ padding-left:32px; background:rgba(255,138,43,0.03); }
-  .tl-item:last-child{ border-bottom:none; }
-  .tl-date{ font-size:10.5px; letter-spacing:0.08em; color:var(--dimmer); padding-top:2px; transition:color .3s ease; }
-  .tl-item:hover .tl-date{ color:var(--glow-1); }
-  .tl-role{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px; }
-  .tl-org{ margin-top:2px; font-size:11px; color:var(--glow-1); letter-spacing:0.04em; }
-  .tl-desc{ margin-top:10px; font-size:12px; line-height:1.7; color:var(--dim); max-width:560px; }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 26px 34px;
+      background: linear-gradient(180deg, rgba(8, 8, 10, 0.9) 0%, rgba(8, 8, 10, 0.7) 70%, transparent 100%);
+      backdrop-filter: blur(6px);
+    }
 
-  .cta-row{
-    margin-top:90px;
-    display:flex; justify-content:center; gap:16px; flex-wrap:wrap;
-  }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+    }
 
-  footer{
-    position:relative; z-index:3;
-    text-align:center; padding:40px 20px 60px;
-    font-size:10.5px; letter-spacing:0.08em; color:var(--dimmer);
-  }
-  footer a{ color:var(--dim); text-decoration:none; border-bottom:1px solid transparent; }
-  footer a:hover{ color:var(--ink); border-color:var(--glow-1); }
-</style>
+    .logo sup {
+      font-size: 8px;
+      opacity: 0.6;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.09em;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: transparent;
+      color: var(--ink);
+      text-decoration: none;
+      transition: border-color .25s ease, background .25s ease, transform .15s ease;
+      will-change: transform;
+    }
+
+    .pill:hover {
+      border-color: rgba(255, 138, 43, 0.5);
+    }
+
+    .pill.solid {
+      background: var(--ink);
+      color: #0a0a0a;
+      border: none;
+    }
+
+    .pill.solid:hover {
+      background: #ffd39a;
+    }
+
+    main {
+      position: relative;
+      z-index: 3;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 34px 120px;
+    }
+
+    .page-head {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--glow-1);
+      margin-bottom: 14px;
+    }
+
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(34px, 6vw, 58px);
+      letter-spacing: -0.02em;
+    }
+
+    .page-sub {
+      margin-top: 14px;
+      color: var(--dim);
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    section {
+      margin-top: 90px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--dimmer);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 34px;
+      opacity: 0;
+      transform: translateX(-14px);
+    }
+
+    .section-label.in-view {
+      animation: slideIn .5s ease forwards;
+    }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .section-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--hair);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width:720px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--hair);
+      border-radius: 14px;
+      padding: 26px 24px;
+      transition: border-color .3s ease, transform .15s ease, box-shadow .3s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    .card.in-view {
+      animation: riseIn .6s cubic-bezier(.2, .7, .2, 1) forwards;
+    }
+
+    @keyframes riseIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 138, 43, 0.13), transparent 65%);
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 138, 43, 0.45);
+      box-shadow: 0 24px 50px -20px rgba(255, 138, 43, 0.15), 0 0 0 1px rgba(255, 138, 43, 0.08);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      transition: color .25s ease;
+    }
+
+    .card:hover .card-title {
+      color: var(--glow-2);
+    }
+
+    .card-role {
+      margin-top: 4px;
+      font-size: 10.5px;
+      color: var(--glow-1);
+      letter-spacing: 0.06em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-desc {
+      margin-top: 14px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--dim);
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tags {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: var(--dim);
+      border: 1px solid var(--hair);
+      border-radius: 20px;
+      padding: 4px 10px;
+      transition: border-color .2s ease, color .2s ease, transform .2s ease;
+    }
+
+    .tag:hover {
+      border-color: rgba(255, 138, 43, 0.5);
+      color: var(--ink);
+      transform: translateY(-1px);
+    }
+
+    .card-link {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--ink);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      padding-bottom: 4px;
+      width: fit-content;
+      transition: opacity .2s ease, border-color .2s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-link span {
+      display: inline-block;
+      transition: transform .25s ease;
+    }
+
+    .card-link:hover {
+      opacity: 0.9;
+      border-color: var(--glow-1);
+    }
+
+    .card-link:hover span {
+      transform: translateX(4px);
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 24px;
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--hair);
+      position: relative;
+      transition: padding-left .3s ease, background .3s ease;
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    .tl-item.in-view {
+      animation: riseIn .6s cubic-bezier(.2, .7, .2, 1) forwards;
+    }
+
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--glow-1), transparent);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform .35s ease;
+    }
+
+    .tl-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .tl-item:hover {
+      padding-left: 32px;
+      background: rgba(255, 138, 43, 0.03);
+    }
+
+    .tl-item:last-child {
+      border-bottom: none;
+    }
+
+    .tl-date {
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      color: var(--dimmer);
+      padding-top: 2px;
+      transition: color .3s ease;
+    }
+
+    .tl-item:hover .tl-date {
+      color: var(--glow-1);
+    }
+
+    .tl-role {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .tl-org {
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--glow-1);
+      letter-spacing: 0.04em;
+    }
+
+    .tl-desc {
+      margin-top: 10px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--dim);
+      max-width: 560px;
+    }
+
+    .cta-row {
+      margin-top: 90px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 40px 20px 60px;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      color: var(--dimmer);
+    }
+
+    footer a {
+      color: var(--dim);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    footer a:hover {
+      color: var(--ink);
+      border-color: var(--glow-1);
+    }
+  </style>
 </head>
+
 <body>
 
   <canvas id="lines"></canvas>
@@ -188,14 +471,14 @@
   <nav>
     <a href="index.html" class="logo">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M1 15L8 1L15 15" stroke="#f3f1ec" stroke-width="1.3"/>
-        <path d="M4.5 15L8 7.5L11.5 15" stroke="#f3f1ec" stroke-width="1.3"/>
+        <path d="M1 15L8 1L15 15" stroke="#f3f1ec" stroke-width="1.3" />
+        <path d="M4.5 15L8 7.5L11.5 15" stroke="#f3f1ec" stroke-width="1.3" />
       </svg>
       SIBAYAN<sup>®</sup>
     </a>
     <div class="nav-right">
       <a href="https://github.com/crazyEj" class="pill">GITHUB</a>
-      <a href="resume.pdf" target="_blank" rel="noopener" class="pill solid">VIEW RESUME</a>
+      <a href="Resume.pdf" target="_blank" rel="noopener" class="pill solid">VIEW RESUME</a>
       <a href="index.html?contact=1" class="pill">CONTACT</a>
     </div>
   </nav>
@@ -204,7 +487,8 @@
     <div class="page-head">
       <div class="eyebrow">SELECTED WORK &amp; EXPERIENCE</div>
       <h1 class="page-title">Projects &amp; Timeline</h1>
-      <p class="page-sub">A mix of academic, freelance, and internship work — spanning data science, full-stack development, and internal tooling.</p>
+      <p class="page-sub">A mix of academic, freelance, and internship work — spanning data science, full-stack
+        development, and internal tooling.</p>
     </div>
 
     <section id="projects">
@@ -218,7 +502,8 @@
               <div class="card-role">Solo Build</div>
             </div>
           </div>
-          <p class="card-desc">A standalone project exploring interactive, playful app mechanics — built and shipped as a self-contained repo.</p>
+          <p class="card-desc">A standalone project exploring interactive, playful app mechanics — built and shipped as
+            a self-contained repo.</p>
           <div class="tags"><span class="tag">JavaScript</span></div>
           <a href="https://github.com/crazyEj/Ice-Cream-man" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
@@ -230,7 +515,8 @@
               <div class="card-role">Data Analysis</div>
             </div>
           </div>
-          <p class="card-desc">A data analysis project examining church-related data — cleaning, exploring, and surfacing patterns from a real-world dataset.</p>
+          <p class="card-desc">A data analysis project examining church-related data — cleaning, exploring, and
+            surfacing patterns from a real-world dataset.</p>
           <div class="tags"><span class="tag">Python</span><span class="tag">Data Analysis</span></div>
           <a href="https://github.com/crazyEj/Church-Analysis" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
@@ -242,9 +528,11 @@
               <div class="card-role">Machine Learning</div>
             </div>
           </div>
-          <p class="card-desc">A predictive system built to flag customers likely to churn, applying ML modeling to a customer dataset end-to-end.</p>
+          <p class="card-desc">A predictive system built to flag customers likely to churn, applying ML modeling to a
+            customer dataset end-to-end.</p>
           <div class="tags"><span class="tag">Python</span><span class="tag">Machine Learning</span></div>
-          <a href="https://github.com/crazyEj/Customer-Church-Prediction-System" class="card-link">VIEW ON GITHUB <span>→</span></a>
+          <a href="https://github.com/crazyEj/Customer-Church-Prediction-System" class="card-link">VIEW ON GITHUB
+            <span>→</span></a>
         </div>
 
         <div class="card">
@@ -254,7 +542,8 @@
               <div class="card-role">Web Development</div>
             </div>
           </div>
-          <p class="card-desc">A portfolio site built and deployed as a client/practice web project, focused on clean presentation and layout.</p>
+          <p class="card-desc">A portfolio site built and deployed as a client/practice web project, focused on clean
+            presentation and layout.</p>
           <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span></div>
           <a href="https://github.com/crazyEj/civil-portfolio-site" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
@@ -266,7 +555,8 @@
               <div class="card-role">Personal Repo</div>
             </div>
           </div>
-          <p class="card-desc">A personal repository — part of an ongoing set of experiments and builds outside of coursework and client work.</p>
+          <p class="card-desc">A personal repository — part of an ongoing set of experiments and builds outside of
+            coursework and client work.</p>
           <div class="tags"><span class="tag">GitHub</span></div>
           <a href="https://github.com/crazyEj/erick" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
@@ -278,8 +568,11 @@
               <div class="card-role">Project Manager</div>
             </div>
           </div>
-          <p class="card-desc">Philippine food price forecasting system using XGBoost with Optuna tuning and MAPIE conformal prediction across four commodity groups — 90.9% coverage, RMSE ₱7.43 — with a dashboard exploring 2050 climate scenarios.</p>
-          <div class="tags"><span class="tag">XGBoost</span><span class="tag">Optuna</span><span class="tag">MAPIE</span><span class="tag">Python</span></div>
+          <p class="card-desc">Philippine food price forecasting system using XGBoost with Optuna tuning and MAPIE
+            conformal prediction across four commodity groups — 90.9% coverage, RMSE ₱7.43 — with a dashboard exploring
+            2050 climate scenarios.</p>
+          <div class="tags"><span class="tag">XGBoost</span><span class="tag">Optuna</span><span
+              class="tag">MAPIE</span><span class="tag">Python</span></div>
           <a href="https://github.com/crazyEj" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
 
@@ -290,8 +583,10 @@
               <div class="card-role">Frontend &amp; Backend Developer</div>
             </div>
           </div>
-          <p class="card-desc">A job networking app built for Baguio-based students — job search, profile management, and application tracking, built as a full-stack SLU coursework project.</p>
-          <div class="tags"><span class="tag">Full-Stack</span><span class="tag">Auth</span><span class="tag">Job Search</span></div>
+          <p class="card-desc">A job networking app built for Baguio-based students — job search, profile management,
+            and application tracking, built as a full-stack SLU coursework project.</p>
+          <div class="tags"><span class="tag">Full-Stack</span><span class="tag">Auth</span><span class="tag">Job
+              Search</span></div>
           <a href="https://github.com/crazyEj" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
 
@@ -302,8 +597,10 @@
               <div class="card-role">Solo Build</div>
             </div>
           </div>
-          <p class="card-desc">A Streamlit-based data processing tool built with pandas, scikit-learn, ARIMA, and rapidfuzz — aimed at being a practical daily driver for data analysis work.</p>
-          <div class="tags"><span class="tag">Streamlit</span><span class="tag">pandas</span><span class="tag">scikit-learn</span><span class="tag">ARIMA</span></div>
+          <p class="card-desc">A Streamlit-based data processing tool built with pandas, scikit-learn, ARIMA, and
+            rapidfuzz — aimed at being a practical daily driver for data analysis work.</p>
+          <div class="tags"><span class="tag">Streamlit</span><span class="tag">pandas</span><span
+              class="tag">scikit-learn</span><span class="tag">ARIMA</span></div>
           <a href="https://github.com/crazyEj/ProcessData" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
 
@@ -314,7 +611,8 @@
               <div class="card-role">CS 324 Group Project</div>
             </div>
           </div>
-          <p class="card-desc">An on-device, multi-model ML mobile app for BPO interview coaching, developed under Dr. Randy Domantay — combining several models for real-time interview feedback.</p>
+          <p class="card-desc">An on-device, multi-model ML mobile app for BPO interview coaching, developed under Dr.
+            Randy Domantay — combining several models for real-time interview feedback.</p>
           <div class="tags"><span class="tag">On-Device ML</span><span class="tag">Mobile</span></div>
           <a href="https://github.com/crazyEj" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
@@ -326,7 +624,8 @@
               <div class="card-role">Freelance Web Developer</div>
             </div>
           </div>
-          <p class="card-desc">Designed and deployed a responsive website for a local café, contributing to an estimated 40% increase in online customer engagement.</p>
+          <p class="card-desc">Designed and deployed a responsive website for a local café, contributing to an estimated
+            40% increase in online customer engagement.</p>
           <div class="tags"><span class="tag">Responsive Design</span><span class="tag">Freelance</span></div>
           <a href="https://github.com/crazyEj" class="card-link">VIEW ON GITHUB <span>→</span></a>
         </div>
@@ -343,7 +642,9 @@
           <div>
             <div class="tl-role">Product &amp; Engineering Intern</div>
             <div class="tl-org">CloudSwyft Global Systems, Inc.</div>
-            <p class="tl-desc">Built an Open edX notification simulation feature, created workflow and technical documentation, integrated transactional email providers into a Django-based payment prototype, and built a curriculum mapping file for DevOps and Data Analysis tracks.</p>
+            <p class="tl-desc">Built an Open edX notification simulation feature, created workflow and technical
+              documentation, integrated transactional email providers into a Django-based payment prototype, and built a
+              curriculum mapping file for DevOps and Data Analysis tracks.</p>
           </div>
         </div>
 
@@ -352,7 +653,8 @@
           <div>
             <div class="tl-role">Junior Data Analyst (Part-Time)</div>
             <div class="tl-org">Angry Orange</div>
-            <p class="tl-desc">Increased ASIN-level campaign profitability by 80% through SQL-driven Amazon sales analysis and targeted ad campaigns; reduced reporting cycle time with an automated Excel dashboard.</p>
+            <p class="tl-desc">Increased ASIN-level campaign profitability by 80% through SQL-driven Amazon sales
+              analysis and targeted ad campaigns; reduced reporting cycle time with an automated Excel dashboard.</p>
           </div>
         </div>
 
@@ -361,7 +663,8 @@
           <div>
             <div class="tl-role">Freelance Web Developer</div>
             <div class="tl-org">100 Degree Café</div>
-            <p class="tl-desc">Designed and deployed a responsive café website end-to-end, driving an estimated 40% increase in online customer engagement.</p>
+            <p class="tl-desc">Designed and deployed a responsive café website end-to-end, driving an estimated 40%
+              increase in online customer engagement.</p>
           </div>
         </div>
 
@@ -370,7 +673,8 @@
           <div>
             <div class="tl-role">BS Computer Science</div>
             <div class="tl-org">Saint Louis University · Dean's Lister since 2023</div>
-            <p class="tl-desc">Coursework spanning structure of programming languages, queueing theory &amp; simulation, and applied ML — alongside group projects like AiNomally and Senti-BPO.</p>
+            <p class="tl-desc">Coursework spanning structure of programming languages, queueing theory &amp; simulation,
+              and applied ML — alongside group projects like AiNomally and Senti-BPO.</p>
           </div>
         </div>
 
@@ -385,113 +689,115 @@
   </main>
 
   <footer>
-    © ERICK JAMES SIBAYAN &nbsp;·&nbsp; <a href="https://github.com/crazyEj">GITHUB</a> &nbsp;·&nbsp; <a href="https://linkedin.com/in/erickjames-sibayan">LINKEDIN</a>
+    © ERICK JAMES SIBAYAN &nbsp;·&nbsp; <a href="https://github.com/crazyEj">GITHUB</a> &nbsp;·&nbsp; <a
+      href="https://linkedin.com/in/erickjames-sibayan">LINKEDIN</a>
   </footer>
 
-<script>
-  /* ---------------- interactive background lines ---------------- */
-  const linesCanvas = document.getElementById('lines');
-  const ctx = linesCanvas.getContext('2d');
-  let W = innerWidth, H = document.documentElement.scrollHeight;
-  const mouse = {x:-9999, y:-9999};
-  function resize(){ W = innerWidth; H = Math.max(document.documentElement.scrollHeight, innerHeight); linesCanvas.width = W; linesCanvas.height = H; }
-  resize();
-  addEventListener('resize', resize);
-  new ResizeObserver(resize).observe(document.body);
+  <script>
+    /* ---------------- interactive background lines ---------------- */
+    const linesCanvas = document.getElementById('lines');
+    const ctx = linesCanvas.getContext('2d');
+    let W = innerWidth, H = document.documentElement.scrollHeight;
+    const mouse = { x: -9999, y: -9999 };
+    function resize() { W = innerWidth; H = Math.max(document.documentElement.scrollHeight, innerHeight); linesCanvas.width = W; linesCanvas.height = H; }
+    resize();
+    addEventListener('resize', resize);
+    new ResizeObserver(resize).observe(document.body);
 
-  const NUM = 16;
-  const lines = [];
-  function edgePoint(){
-    const side = Math.floor(Math.random()*4);
-    if(side===0) return {x:Math.random()*W, y:-60};
-    if(side===1) return {x:W+60, y:Math.random()*H};
-    if(side===2) return {x:Math.random()*W, y:H+60};
-    return {x:-60, y:Math.random()*H};
-  }
-  for(let i=0;i<NUM;i++){
-    const a = edgePoint(), b = edgePoint();
-    lines.push({x1:a.x,y1:a.y,x2:b.x,y2:b.y, bx:0, by:0, tx:0, ty:0});
-  }
-  addEventListener('mousemove', e=>{ mouse.x = e.pageX; mouse.y = e.pageY; });
-  addEventListener('mouseleave', ()=>{ mouse.x=-9999; mouse.y=-9999; });
+    const NUM = 16;
+    const lines = [];
+    function edgePoint() {
+      const side = Math.floor(Math.random() * 4);
+      if (side === 0) return { x: Math.random() * W, y: -60 };
+      if (side === 1) return { x: W + 60, y: Math.random() * H };
+      if (side === 2) return { x: Math.random() * W, y: H + 60 };
+      return { x: -60, y: Math.random() * H };
+    }
+    for (let i = 0; i < NUM; i++) {
+      const a = edgePoint(), b = edgePoint();
+      lines.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y, bx: 0, by: 0, tx: 0, ty: 0 });
+    }
+    addEventListener('mousemove', e => { mouse.x = e.pageX; mouse.y = e.pageY; });
+    addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
 
-  function distToSegment(px,py,x1,y1,x2,y2){
-    const dx=x2-x1, dy=y2-y1;
-    const len2 = dx*dx+dy*dy || 1;
-    let t = ((px-x1)*dx + (py-y1)*dy) / len2;
-    t = Math.max(0, Math.min(1, t));
-    const cx = x1 + t*dx, cy = y1 + t*dy;
-    return {d:Math.hypot(px-cx, py-cy), cx, cy};
-  }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    lines.forEach(l=>{
-      const mx=(l.x1+l.x2)/2, my=(l.y1+l.y2)/2;
-      const res = distToSegment(mouse.x, mouse.y, l.x1, l.y1, l.x2, l.y2);
-      const radius = 170;
-      let near = false;
-      if(res.d < radius){
-        near = true;
-        const force = (1 - res.d/radius) * 46;
-        const nx = -(l.y2-l.y1), ny = (l.x2-l.x1);
-        const nlen = Math.hypot(nx,ny) || 1;
-        const dirSign = ((mouse.x-res.cx)*nx/nlen + (mouse.y-res.cy)*ny/nlen) < 0 ? 1 : -1;
-        l.tx = (nx/nlen) * force * dirSign;
-        l.ty = (ny/nlen) * force * dirSign;
-      } else { l.tx = 0; l.ty = 0; }
-      l.bx += (l.tx - l.bx) * 0.08;
-      l.by += (l.ty - l.by) * 0.08;
-      const cx = mx + l.bx, cy = my + l.by;
-      ctx.strokeStyle = near ? 'rgba(255,150,60,0.22)' : 'rgba(255,255,255,0.05)';
-      ctx.lineWidth = near ? 1.2 : 1;
-      ctx.beginPath();
-      ctx.moveTo(l.x1, l.y1);
-      ctx.quadraticCurveTo(cx, cy, l.x2, l.y2);
-      ctx.stroke();
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
+    function distToSegment(px, py, x1, y1, x2, y2) {
+      const dx = x2 - x1, dy = y2 - y1;
+      const len2 = dx * dx + dy * dy || 1;
+      let t = ((px - x1) * dx + (py - y1) * dy) / len2;
+      t = Math.max(0, Math.min(1, t));
+      const cx = x1 + t * dx, cy = y1 + t * dy;
+      return { d: Math.hypot(px - cx, py - cy), cx, cy };
+    }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      lines.forEach(l => {
+        const mx = (l.x1 + l.x2) / 2, my = (l.y1 + l.y2) / 2;
+        const res = distToSegment(mouse.x, mouse.y, l.x1, l.y1, l.x2, l.y2);
+        const radius = 170;
+        let near = false;
+        if (res.d < radius) {
+          near = true;
+          const force = (1 - res.d / radius) * 46;
+          const nx = -(l.y2 - l.y1), ny = (l.x2 - l.x1);
+          const nlen = Math.hypot(nx, ny) || 1;
+          const dirSign = ((mouse.x - res.cx) * nx / nlen + (mouse.y - res.cy) * ny / nlen) < 0 ? 1 : -1;
+          l.tx = (nx / nlen) * force * dirSign;
+          l.ty = (ny / nlen) * force * dirSign;
+        } else { l.tx = 0; l.ty = 0; }
+        l.bx += (l.tx - l.bx) * 0.08;
+        l.by += (l.ty - l.by) * 0.08;
+        const cx = mx + l.bx, cy = my + l.by;
+        ctx.strokeStyle = near ? 'rgba(255,150,60,0.22)' : 'rgba(255,255,255,0.05)';
+        ctx.lineWidth = near ? 1.2 : 1;
+        ctx.beginPath();
+        ctx.moveTo(l.x1, l.y1);
+        ctx.quadraticCurveTo(cx, cy, l.x2, l.y2);
+        ctx.stroke();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
 
-  /* ---------------- card tilt + cursor spotlight ---------------- */
-  document.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('mousemove', e=>{
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width;
-      const py = (e.clientY - r.top) / r.height;
-      card.style.setProperty('--mx', (px*100)+'%');
-      card.style.setProperty('--my', (py*100)+'%');
-      const rx = (py - 0.5) * -8;
-      const ry = (px - 0.5) * 10;
-      card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+    /* ---------------- card tilt + cursor spotlight ---------------- */
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+        const rx = (py - 0.5) * -8;
+        const ry = (px - 0.5) * 10;
+        card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
+      });
     });
-    card.addEventListener('mouseleave', ()=>{
-      card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
-    });
-  });
 
-  /* ---------------- magnetic buttons ---------------- */
-  document.querySelectorAll('.pill').forEach(btn=>{
-    btn.addEventListener('mousemove', e=>{
-      const r = btn.getBoundingClientRect();
-      const mx = e.clientX - (r.left + r.width/2);
-      const my = e.clientY - (r.top + r.height/2);
-      btn.style.transform = `translate(${mx*0.25}px, ${my*0.35}px)`;
+    /* ---------------- magnetic buttons ---------------- */
+    document.querySelectorAll('.pill').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const mx = e.clientX - (r.left + r.width / 2);
+        const my = e.clientY - (r.top + r.height / 2);
+        btn.style.transform = `translate(${mx * 0.25}px, ${my * 0.35}px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
     });
-    btn.addEventListener('mouseleave', ()=>{ btn.style.transform = 'translate(0,0)'; });
-  });
 
-  /* ---------------- scroll reveal ---------------- */
-  const revealTargets = document.querySelectorAll('.card, .tl-item, .section-label');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach((entry, i)=>{
-      if(entry.isIntersecting){
-        setTimeout(()=> entry.target.classList.add('in-view'), i*40);
-        io.unobserve(entry.target);
-      }
-    });
-  }, {threshold:0.15});
-  revealTargets.forEach(el=>io.observe(el));
-</script>
+    /* ---------------- scroll reveal ---------------- */
+    const revealTargets = document.querySelectorAll('.card, .tl-item, .section-label');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('in-view'), i * 40);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealTargets.forEach(el => io.observe(el));
+  </script>
 </body>
+
 </html>
