@@ -196,6 +196,25 @@
       background: var(--hair);
     }
 
+    .services-head {
+      margin-bottom: 34px;
+    }
+
+    .services-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(30px, 5vw, 46px);
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    .services-sub {
+      margin-top: 12px;
+      max-width: 560px;
+      color: var(--dim);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -686,18 +705,22 @@
     </section>
 
     <section id="services">
-      <div class="section-label">SERVICES &amp; SKILLS</div>
+      <div class="services-head">
+        <div class="eyebrow">WHAT I DO</div>
+        <h2 class="services-title">Services &amp; Skills</h2>
+        <p class="services-sub">Practical digital solutions across front-end development, data, machine learning, and automation.</p>
+      </div>
       <div class="grid">
 
         <div class="card">
           <div class="card-top">
             <div>
-              <div class="card-title">Full-Stack Web Development</div>
+              <div class="card-title">Front-End Development</div>
               <div class="card-role">BUILDING FOR THE WEB</div>
             </div>
           </div>
-          <p class="card-desc">Responsive websites and web apps built from the ground up, from polished interfaces to backend logic and deployment.</p>
-          <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">Django</span></div>
+          <p class="card-desc">Responsive, accessible interfaces with polished layouts, clear interactions, and a strong focus on the user experience.</p>
+          <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">Responsive Design</span></div>
         </div>
 
         <div class="card">
@@ -739,6 +762,7 @@
     <div class="cta-row">
       <a href="https://github.com/crazyEj" class="pill">GITHUB PROFILE →</a>
       <a href="resume.pdf" target="_blank" rel="noopener" class="pill solid">VIEW RESUME →</a>
+      <a href="https://www.linkedin.com/in/erickjames-sibayan/" target="_blank" rel="noopener" class="pill">LINKEDIN →</a>
       <a href="Index.html?contact=1" class="pill">GET IN TOUCH →</a>
     </div>
   </main>
