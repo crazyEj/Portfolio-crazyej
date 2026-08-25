@@ -30,13 +30,12 @@
     body {
       background: var(--bg);
       color: var(--ink);
-      height: 100%;
-      overflow: hidden;
       font-family: 'JetBrains Mono', monospace;
     }
 
     body {
       position: relative;
+      overflow-x: hidden;
     }
 
     canvas#lines {
@@ -138,7 +137,7 @@
     }
 
     .hero {
-      position: fixed;
+      position: absolute;
       inset: 0;
       z-index: 4;
       display: flex;
@@ -205,7 +204,7 @@
     }
 
     .hint {
-      position: fixed;
+      position: absolute;
       bottom: 34px;
       left: 50%;
       transform: translateX(-50%);
@@ -424,6 +423,125 @@
         padding: 20px;
       }
     }
+
+    /* ---------------- home screen wrapper ---------------- */
+    .home-screen {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ---------------- scroll cue ---------------- */
+    .scroll-cue {
+      display: block;
+      margin-top: 8px;
+      letter-spacing: 0.14em;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { opacity: 0.35; transform: translateY(0); }
+      50%       { opacity: 0.75; transform: translateY(5px); }
+    }
+
+    /* ---------------- services section ---------------- */
+    .services {
+      position: relative;
+      z-index: 3;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 100px 34px 130px;
+    }
+
+    .services-eyebrow {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--glow-1);
+      margin-bottom: 14px;
+    }
+
+    .services-title {
+      text-align: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 5vw, 48px);
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .services-sub {
+      text-align: center;
+      color: var(--dim);
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 60px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 640px) {
+      .services-grid { grid-template-columns: 1fr; }
+    }
+
+    .service-card {
+      background: rgba(14, 14, 16, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      padding: 28px 24px;
+      transition: border-color .3s ease, box-shadow .3s ease, transform .2s ease;
+    }
+
+    .service-card:hover {
+      border-color: rgba(255, 138, 43, 0.45);
+      box-shadow: 0 24px 50px -20px rgba(255, 138, 43, 0.13);
+      transform: translateY(-3px);
+    }
+
+    .service-icon {
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
+
+    .service-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+      transition: color .25s ease;
+    }
+
+    .service-card:hover .service-name {
+      color: var(--glow-2);
+    }
+
+    .service-desc {
+      font-size: 12px;
+      line-height: 1.75;
+      color: var(--dim);
+    }
+
+    .service-tags {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .service-tag {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: var(--dim);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
   </style>
 </head>
 
@@ -454,22 +572,83 @@
     <a href="#" id="navContactLink">CONTACT</a>
   </div>
 
-  <div class="hero">
-    <div class="glyph-spacer"></div>
-    <div class="subline">ERICK JAMES SIBAYAN</div>
-    <div class="role">COMPUTER SCIENCE STUDENT &nbsp;·&nbsp; DEVELOPER</div>
-    <p class="desc">Building thoughtful software and clean, functional interfaces — from data tools to full-stack web
-      apps.</p>
-    <div class="links">
-      <a href="projects.html" class="link">VIEW PROJECTS <span>→</span></a>
-      <a href="#" class="link" id="contactLink">GET IN TOUCH <span>→</span></a>
+  <div class="home-screen">
+    <div class="hero">
+      <div class="glyph-spacer"></div>
+      <div class="subline">ERICK JAMES SIBAYAN</div>
+      <div class="role">COMPUTER SCIENCE STUDENT &nbsp;·&nbsp; DEVELOPER</div>
+      <p class="desc">Building thoughtful software and clean, functional interfaces — from data tools to full-stack web
+        apps.</p>
+      <div class="links">
+        <a href="projects.html" class="link">VIEW PROJECTS <span>→</span></a>
+        <a href="#" class="link" id="contactLink">GET IN TOUCH <span>→</span></a>
+      </div>
+    </div>
+
+    <div class="hint">
+      HOLD TO 🔥 IGNITE<br>
+      DRAG ⚡ THE LINES TO PLAY<br>
+      <span class="scroll-cue">SCROLL ↓</span>
     </div>
   </div>
 
-  <div class="hint">
-    HOLD TO 🔥 IGNITE<br>
-    DRAG ⚡ THE LINES TO PLAY
-  </div>
+  <!-- ============ SERVICES SECTION ============ -->
+  <section class="services" id="services">
+    <div class="services-eyebrow">WHAT I DO</div>
+    <h2 class="services-title">Services &amp; Skills</h2>
+    <p class="services-sub">From solo builds to team projects — here's what I bring to the table.</p>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <div class="service-name">Full-Stack Web Development</div>
+        <p class="service-desc">Building responsive, functional websites and web apps from the ground up — from layout and UI to backend logic and deployment.</p>
+        <div class="service-tags">
+          <span class="service-tag">HTML/CSS</span>
+          <span class="service-tag">JavaScript</span>
+          <span class="service-tag">Django</span>
+          <span class="service-tag">Full-Stack</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">📊</div>
+        <div class="service-name">Data Analysis &amp; Visualization</div>
+        <p class="service-desc">Cleaning, exploring, and communicating insights from raw datasets — with Python, SQL, and automated Excel dashboards.</p>
+        <div class="service-tags">
+          <span class="service-tag">Python</span>
+          <span class="service-tag">SQL</span>
+          <span class="service-tag">pandas</span>
+          <span class="service-tag">Excel</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <div class="service-name">Machine Learning &amp; Forecasting</div>
+        <p class="service-desc">End-to-end ML pipelines — from data prep and feature engineering to model training, tuning, and evaluation.</p>
+        <div class="service-tags">
+          <span class="service-tag">scikit-learn</span>
+          <span class="service-tag">XGBoost</span>
+          <span class="service-tag">ARIMA</span>
+          <span class="service-tag">Optuna</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">⚙️</div>
+        <div class="service-name">Internal Tooling &amp; Automation</div>
+        <p class="service-desc">Streamlit dashboards, data processing tools, and workflow automation — built for real daily-driver use.</p>
+        <div class="service-tags">
+          <span class="service-tag">Streamlit</span>
+          <span class="service-tag">Python</span>
+          <span class="service-tag">Automation</span>
+          <span class="service-tag">rapidfuzz</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-card">
