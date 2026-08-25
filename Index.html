@@ -12,12 +12,12 @@
     rel="stylesheet">
   <style>
     :root {
-      --bg: #08080a;
+      --bg: #0a0908;
       --ink: #f3f1ec;
-      --dim: #8b887f;
-      --dimmer: #514f49;
-      --glow-1: #ff8a2b;
-      --glow-2: #ffd39a;
+      --dim: #a8a59b;
+      --dimmer: #6b685f;
+      --glow-1: #c97b5a;
+      --glow-2: #e0b39a;
     }
 
     * {
@@ -331,7 +331,7 @@
     .field input:focus,
     .field textarea:focus {
       border-color: var(--glow-1);
-      background: rgba(255, 138, 43, 0.04);
+      background: rgba(201, 123, 90, 0.04);
     }
 
     .modal-submit {
@@ -498,8 +498,8 @@
     }
 
     .service-card:hover {
-      border-color: rgba(255, 138, 43, 0.45);
-      box-shadow: 0 24px 50px -20px rgba(255, 138, 43, 0.13);
+      border-color: rgba(201, 123, 90, 0.45);
+      box-shadow: 0 24px 50px -20px rgba(201, 123, 90, 0.13);
       transform: translateY(-3px);
     }
 
@@ -685,7 +685,7 @@
         l.bx += (l.tx - l.bx) * 0.08;
         l.by += (l.ty - l.by) * 0.08;
         const cx = mx + l.bx, cy = my + l.by;
-        ctx.strokeStyle = near ? `rgba(255,150,60,${0.16 + holdPulse * 0.25})` : 'rgba(255,255,255,0.06)';
+        ctx.strokeStyle = near ? `rgba(201,123,90,${0.16 + holdPulse * 0.25})` : 'rgba(255,255,255,0.06)';
         ctx.lineWidth = near ? 1.2 : 1;
         ctx.beginPath();
         ctx.moveTo(l.x1, l.y1);
@@ -697,8 +697,8 @@
       particles = particles.filter(p => p.life > 0);
       particles.forEach(p => {
         ctx.beginPath();
-        ctx.fillStyle = `rgba(255,140,40,${p.life})`;
-        ctx.shadowColor = 'rgba(255,120,30,0.9)';
+        ctx.fillStyle = `rgba(201,123,90,${p.life})`;
+        ctx.shadowColor = 'rgba(201,123,90,0.9)';
         ctx.shadowBlur = 9;
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
         ctx.fill();
@@ -723,7 +723,7 @@
     const rim = new THREE.DirectionalLight(0x8fb4ff, 0.35);
     rim.position.set(6, -4, -8);
     scene.add(rim);
-    const glowLight = new THREE.PointLight(0xff8a2b, 2.2, 46, 2);
+    const glowLight = new THREE.PointLight(0xc97b5a, 2.2, 46, 2);
     glowLight.position.set(0, -4, 8);
     scene.add(glowLight);
 

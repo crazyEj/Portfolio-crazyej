@@ -12,13 +12,13 @@
     rel="stylesheet">
   <style>
     :root {
-      --bg: #08080a;
+      --bg: #0a0908;
       --card: #0e0e10;
       --ink: #f3f1ec;
-      --dim: #8b887f;
-      --dimmer: #514f49;
-      --glow-1: #ff8a2b;
-      --glow-2: #ffd39a;
+      --dim: #a8a59b;
+      --dimmer: #6b685f;
+      --glow-1: #c97b5a;
+      --glow-2: #e0b39a;
       --hair: rgba(255, 255, 255, 0.09);
     }
 
@@ -112,7 +112,7 @@
     }
 
     .pill:hover {
-      border-color: rgba(255, 138, 43, 0.5);
+      border-color: rgba(201, 123, 90, 0.5);
     }
 
     .pill.solid {
@@ -122,7 +122,7 @@
     }
 
     .pill.solid:hover {
-      background: #ffd39a;
+      background: #e0b39a;
     }
 
     main {
@@ -258,7 +258,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 138, 43, 0.13), transparent 65%);
+      background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 123, 90, 0.13), transparent 65%);
       opacity: 0;
       transition: opacity .3s ease;
       pointer-events: none;
@@ -269,8 +269,8 @@
     }
 
     .card:hover {
-      border-color: rgba(255, 138, 43, 0.45);
-      box-shadow: 0 24px 50px -20px rgba(255, 138, 43, 0.15), 0 0 0 1px rgba(255, 138, 43, 0.08);
+      border-color: rgba(201, 123, 90, 0.45);
+      box-shadow: 0 24px 50px -20px rgba(201, 123, 90, 0.15), 0 0 0 1px rgba(201, 123, 90, 0.08);
     }
 
     .card-top {
@@ -333,7 +333,7 @@
     }
 
     .tag:hover {
-      border-color: rgba(255, 138, 43, 0.5);
+      border-color: rgba(201, 123, 90, 0.5);
       color: var(--ink);
       transform: translateY(-1px);
     }
@@ -411,7 +411,7 @@
 
     .tl-item:hover {
       padding-left: 32px;
-      background: rgba(255, 138, 43, 0.03);
+      background: rgba(201, 123, 90, 0.03);
     }
 
     .tl-item:last-child {
@@ -826,7 +826,7 @@
         l.bx += (l.tx - l.bx) * 0.08;
         l.by += (l.ty - l.by) * 0.08;
         const cx = mx + l.bx, cy = my + l.by;
-        ctx.strokeStyle = near ? 'rgba(255,150,60,0.22)' : 'rgba(255,255,255,0.05)';
+        ctx.strokeStyle = near ? 'rgba(201,123,90,0.22)' : 'rgba(255,255,255,0.05)';
         ctx.lineWidth = near ? 1.2 : 1;
         ctx.beginPath();
         ctx.moveTo(l.x1, l.y1);
