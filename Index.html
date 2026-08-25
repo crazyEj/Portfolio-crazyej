@@ -16,8 +16,8 @@
       --ink: #f3f1ec;
       --dim: #a8a59b;
       --dimmer: #6b685f;
-      --glow-1: #c97b5a;
-      --glow-2: #e0b39a;
+      --glow-1: #d68b5f;
+      --glow-2: #e6c2a8;
     }
 
     * {
@@ -150,7 +150,7 @@
     }
 
     .glyph-spacer {
-      height: clamp(150px, 26vw, 320px);
+      height: clamp(180px, 30vw, 380px);
     }
 
     .subline {
@@ -685,7 +685,7 @@
         l.bx += (l.tx - l.bx) * 0.08;
         l.by += (l.ty - l.by) * 0.08;
         const cx = mx + l.bx, cy = my + l.by;
-        ctx.strokeStyle = near ? `rgba(201,123,90,${0.16 + holdPulse * 0.25})` : 'rgba(255,255,255,0.06)';
+        ctx.strokeStyle = near ? `rgba(214,139,95,${0.16 + holdPulse * 0.25})` : 'rgba(255,255,255,0.06)';
         ctx.lineWidth = near ? 1.2 : 1;
         ctx.beginPath();
         ctx.moveTo(l.x1, l.y1);
@@ -697,8 +697,8 @@
       particles = particles.filter(p => p.life > 0);
       particles.forEach(p => {
         ctx.beginPath();
-        ctx.fillStyle = `rgba(201,123,90,${p.life})`;
-        ctx.shadowColor = 'rgba(201,123,90,0.9)';
+        ctx.fillStyle = `rgba(214,139,95,${p.life})`;
+        ctx.shadowColor = 'rgba(214,139,95,0.9)';
         ctx.shadowBlur = 9;
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
         ctx.fill();
@@ -723,7 +723,7 @@
     const rim = new THREE.DirectionalLight(0x8fb4ff, 0.35);
     rim.position.set(6, -4, -8);
     scene.add(rim);
-    const glowLight = new THREE.PointLight(0xc97b5a, 2.2, 46, 2);
+    const glowLight = new THREE.PointLight(0xd68b5f, 2.8, 46, 2);
     glowLight.position.set(0, -4, 8);
     scene.add(glowLight);
 
@@ -734,11 +734,11 @@
     const fontLoader = new THREE.FontLoader();
     fontLoader.load('https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json', function (font) {
       const geo = new THREE.TextGeometry('EJS', {
-        font: font, size: 10, height: 3, curveSegments: 10,
-        bevelEnabled: true, bevelThickness: 0.45, bevelSize: 0.32, bevelSegments: 4
+        font: font, size: 7, height: 2.2, curveSegments: 10,
+        bevelEnabled: true, bevelThickness: 0.32, bevelSize: 0.22, bevelSegments: 4
       });
       geo.center();
-      const mat = new THREE.MeshStandardMaterial({ color: 0x3a352c, metalness: 0.9, roughness: 0.25 });
+      const mat = new THREE.MeshStandardMaterial({ color: 0x5c4636, metalness: 0.9, roughness: 0.25 });
       mesh = new THREE.Mesh(geo, mat);
       group.add(mesh);
     });
@@ -760,7 +760,7 @@
       const gx = Math.sin(t * 0.6) * 10;
       const gy = Math.cos(t * 0.4) * 4 - 2;
       glowLight.position.set(gx, gy, 7);
-      glowLight.intensity = 2 + Math.sin(t * 0.6) * 1 + holdPulse * 7;
+      glowLight.intensity = 2.8 + Math.sin(t * 0.6) * 1 + holdPulse * 7;
 
       camera.position.z = 34 - holdPulse * 2;
       renderer.render(scene, camera);
