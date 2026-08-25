@@ -354,6 +354,65 @@
       display: block;
     }
 
+    /* ---------------- nav overlay ---------------- */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: rgba(4, 4, 5, 0.82);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+
+    .nav-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .nav-overlay a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 7vw, 52px);
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+    .nav-overlay a:hover {
+      color: var(--glow-1);
+    }
+
+    .nav-overlay-close {
+      position: absolute;
+      top: 22px;
+      right: 28px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: none;
+      color: var(--dim);
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .2s ease, color .2s ease;
+    }
+
+    .nav-overlay-close:hover {
+      border-color: var(--glow-1);
+      color: var(--ink);
+    }
+
     @media (max-width:640px) {
       .links {
         flex-direction: column;
@@ -384,9 +443,16 @@
     </div>
     <div class="nav-right">
       <a href="Resume.pdf" target="_blank" rel="noopener" class="pill solid">VIEW RESUME</a>
-      <div class="pill"><span class="bars"><span></span><span></span></span> MENU</div>
+      <button id="menuBtn" class="pill" aria-label="Open navigation menu"><span class="bars"><span></span><span></span></span> MENU</button>
     </div>
   </nav>
+
+  <div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <button class="nav-overlay-close" id="navOverlayClose" aria-label="Close navigation menu">✕</button>
+    <a href="Index.html">HOME</a>
+    <a href="projects.html">PROJECTS</a>
+    <a href="#" id="navContactLink">CONTACT</a>
+  </div>
 
   <div class="hero">
     <div class="glyph-spacer"></div>
@@ -410,21 +476,21 @@
       <button class="modal-close" id="modalClose">✕</button>
       <div class="modal-title">Let's Talk</div>
       <p class="modal-sub">Open to conversations on software projects, data tools, and web development work.</p>
-      <form id="contactForm">
+      <form id="contactForm" action="https://formspree.io/f/MY_FORM_ID" method="POST">
         <div class="field">
           <label for="cf-name">Name</label>
-          <input id="cf-name" type="text" required>
+          <input id="cf-name" name="name" type="text" required>
         </div>
         <div class="field">
           <label for="cf-email">Email</label>
-          <input id="cf-email" type="email" required>
+          <input id="cf-email" name="email" type="email" required>
         </div>
         <div class="field">
           <label for="cf-message">Message</label>
-          <textarea id="cf-message" required></textarea>
+          <textarea id="cf-message" name="message" required></textarea>
         </div>
-        <button type="submit" class="pill solid modal-submit">Send Message</button>
-        <p class="modal-note" id="modalNote">Thanks — your message is ready to send.</p>
+        <button type="submit" class="pill solid modal-submit" id="modalSubmitBtn">Send Message</button>
+        <p class="modal-note" id="modalNote">Thanks — I'll get back to you soon.</p>
       </form>
     </div>
   </div>
@@ -620,12 +686,32 @@
     }
     loop();
 
+    /* ---------------- nav overlay ---------------- */
+    const navOverlay  = document.getElementById('navOverlay');
+    const menuBtn     = document.getElementById('menuBtn');
+    const navOverlayClose = document.getElementById('navOverlayClose');
+    const navContactLink  = document.getElementById('navContactLink');
+
+    function openNav()  { navOverlay.classList.add('open'); }
+    function closeNav() { navOverlay.classList.remove('open'); }
+
+    menuBtn.addEventListener('click', openNav);
+    navOverlayClose.addEventListener('click', closeNav);
+    navOverlay.addEventListener('click', e => { if (e.target === navOverlay) closeNav(); });
+
+    navContactLink.addEventListener('click', e => {
+      e.preventDefault();
+      closeNav();
+      openModal();
+    });
+
     /* ---------------- contact modal ---------------- */
-    const modalOverlay = document.getElementById('modalOverlay');
-    const contactLink = document.getElementById('contactLink');
-    const modalClose = document.getElementById('modalClose');
-    const contactForm = document.getElementById('contactForm');
-    const modalNote = document.getElementById('modalNote');
+    const modalOverlay   = document.getElementById('modalOverlay');
+    const contactLink    = document.getElementById('contactLink');
+    const modalClose     = document.getElementById('modalClose');
+    const contactForm    = document.getElementById('contactForm');
+    const modalNote      = document.getElementById('modalNote');
+    const modalSubmitBtn = document.getElementById('modalSubmitBtn');
 
     function openModal(e) {
       if (e) e.preventDefault();
@@ -637,12 +723,31 @@
     contactLink.addEventListener('click', openModal);
     modalClose.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
-    addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeNav(); } });
 
-    contactForm.addEventListener('submit', e => {
+    contactForm.addEventListener('submit', async e => {
       e.preventDefault();
-      modalNote.classList.add('show');
-      contactForm.querySelector('.modal-submit').textContent = 'Sent ✓';
+      modalSubmitBtn.textContent = 'Sending…';
+      modalSubmitBtn.disabled = true;
+      try {
+        const res = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          modalNote.classList.add('show');
+          modalSubmitBtn.textContent = 'Sent ✓';
+        } else {
+          modalSubmitBtn.textContent = 'Send Message';
+          modalSubmitBtn.disabled = false;
+          alert('Something went wrong. Please try again.');
+        }
+      } catch (_) {
+        modalSubmitBtn.textContent = 'Send Message';
+        modalSubmitBtn.disabled = false;
+        alert('Network error. Please try again.');
+      }
     });
 
     if (new URLSearchParams(location.search).get('contact') === '1') {
