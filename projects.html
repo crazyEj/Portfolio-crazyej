@@ -134,7 +134,10 @@
     }
 
     .page-head {
-      text-align: center;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      align-items: center;
+      gap: 54px;
       margin-bottom: 70px;
     }
 
@@ -158,8 +161,55 @@
       font-size: 13px;
       line-height: 1.7;
       max-width: 520px;
-      margin-left: auto;
-      margin-right: auto;
+    }
+
+    .profile-mark {
+      aspect-ratio: 1;
+      border: 1px solid rgba(214, 139, 95, 0.48);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      background: radial-gradient(circle at 50% 42%, rgba(214, 139, 95, 0.16), transparent 58%);
+      box-shadow: 0 0 70px rgba(214, 139, 95, 0.1);
+    }
+
+    .profile-mark::before,
+    .profile-mark::after {
+      content: "";
+      position: absolute;
+      background: var(--glow-1);
+      opacity: 0.7;
+    }
+
+    .profile-mark::before {
+      width: 1px;
+      height: 132%;
+      transform: rotate(45deg);
+    }
+
+    .profile-mark::after {
+      width: 132%;
+      height: 1px;
+      transform: rotate(-45deg);
+    }
+
+    .profile-initials {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-caption {
+      position: absolute;
+      bottom: 22px;
+      z-index: 1;
+      color: var(--glow-2);
+      font-size: 9px;
+      letter-spacing: 0.18em;
     }
 
     section {
@@ -222,6 +272,22 @@
     }
 
     @media (max-width:720px) {
+      .page-head {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        margin-bottom: 54px;
+      }
+
+      .page-head-content {
+        order: 2;
+      }
+
+      .profile-mark {
+        width: 150px;
+        justify-self: start;
+        order: 1;
+      }
+
       .grid {
         grid-template-columns: 1fr;
       }
@@ -505,10 +571,16 @@
 
   <main>
     <div class="page-head">
-      <div class="eyebrow">SELECTED WORK &amp; EXPERIENCE</div>
-      <h1 class="page-title">Projects &amp; Timeline</h1>
-      <p class="page-sub">A mix of academic, freelance, and internship work — spanning data science, full-stack
-        development, and internal tooling.</p>
+      <div class="page-head-content">
+        <div class="eyebrow">SELECTED WORK &amp; EXPERIENCE</div>
+        <h1 class="page-title">Projects &amp; Timeline</h1>
+        <p class="page-sub">A mix of academic, freelance, and internship work — spanning data science, full-stack
+          development, and internal tooling.</p>
+      </div>
+      <div class="profile-mark" aria-label="Erick James Sibayan identity mark">
+        <span class="profile-initials">EJ</span>
+        <span class="profile-caption">SIBAYAN</span>
+      </div>
     </div>
 
     <section id="projects">
