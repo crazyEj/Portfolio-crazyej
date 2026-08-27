@@ -500,81 +500,96 @@
       transform: translateX(4px);
     }
 
-    .curtain-split {
+    .depth-stack {
       position: fixed;
       inset: 0;
       z-index: 50;
       pointer-events: none;
       opacity: 0;
-      display: flex;
-      transition: opacity .15s ease;
+      background: rgba(10, 9, 8, 0.72);
+      transition: opacity .25s ease;
     }
 
-    .curtain-split.active {
+    .depth-stack.active {
       opacity: 1;
     }
 
-    .curtain-panel {
-      position: relative;
-      width: 50%;
-      height: 100%;
-      background: var(--bg);
-      transition: transform .65s cubic-bezier(.76, 0, .24, 1);
-    }
-
-    .curtain-panel::after {
-      content: "";
+    .depth-stack::after {
+      content: "PROJECT / OPENING";
       position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: rgba(214, 139, 95, 0.7);
-    }
-
-    .curtain-left {
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .curtain-left::after {
-      right: 0;
-    }
-
-    .curtain-right {
-      border-left: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .curtain-right::after {
-      left: 0;
-    }
-
-    .curtain-split.active .curtain-left {
-      transform: translateX(-100%);
-    }
-
-    .curtain-split.active .curtain-right {
-      transform: translateX(100%);
-    }
-
-    .curtain-label {
-      position: absolute;
-      top: 50%;
       left: 50%;
-      z-index: 1;
+      top: calc(50% + 190px);
       color: var(--glow-2);
       font-size: 10px;
       letter-spacing: 0.2em;
-      transform: translate(-50%, -50%);
+      transform: translateX(-50%);
       transition: opacity .2s ease;
     }
 
-    .curtain-split.active .curtain-label {
+    .depth-plane,
+    .depth-card {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(62vw, 560px);
+      height: 330px;
+      border: 1px solid rgba(214, 139, 95, 0.4);
+      border-radius: 14px;
+      transform-origin: center center;
+      transition: transform .7s cubic-bezier(.2, .8, .2, 1), opacity .7s ease;
+    }
+
+    .depth-plane {
+      background: #15110f;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+    }
+
+    .depth-back {
+      opacity: 0.5;
+      transform: translate(-50%, -50%) translate(-30px, -24px) scale(.86) rotate(-8deg);
+    }
+
+    .depth-mid {
+      opacity: 0.75;
+      transform: translate(-50%, -50%) translate(18px, -14px) scale(.93) rotate(5deg);
+    }
+
+    .depth-card {
+      overflow: hidden;
+      background: var(--card);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.72) rotate(2deg);
+    }
+
+    .depth-card .card-link {
+      pointer-events: none;
+    }
+
+    .depth-stack.active .depth-back {
+      transform: translate(-50%, -50%) translate(-68px, -42px) scale(.92) rotate(-10deg);
+    }
+
+    .depth-stack.active .depth-mid {
+      transform: translate(-50%, -50%) translate(42px, -24px) scale(.97) rotate(7deg);
+    }
+
+    .depth-stack.active .depth-card {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.12) rotate(0);
+    }
+
+    .depth-stack.active::after {
       opacity: 0;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .curtain-split,
-      .curtain-panel,
-      .curtain-label {
+      .depth-stack,
+      .depth-plane,
+      .depth-card {
+        transition-duration: .01ms;
+      }
+
+      .depth-stack::after {
         transition-duration: .01ms;
       }
     }
@@ -692,10 +707,10 @@
 </head>
 
 <body>
-  <div class="curtain-split" aria-hidden="true">
-    <span class="curtain-panel curtain-left"></span>
-    <span class="curtain-panel curtain-right"></span>
-    <span class="curtain-label">PROJECT / OPENING</span>
+  <div class="depth-stack" aria-hidden="true">
+    <span class="depth-plane depth-back"></span>
+    <span class="depth-plane depth-mid"></span>
+    <div class="depth-card"></div>
   </div>
   <div class="page-enter" aria-hidden="true">
     <span class="enter-layer enter-back"></span>
@@ -1080,19 +1095,25 @@
       });
     });
 
-    /* ---------------- vertical curtain split ---------------- */
-    const curtainSplit = document.querySelector('.curtain-split');
+    /* ---------------- overlapping depth stack ---------------- */
+    const depthStack = document.querySelector('.depth-stack');
+    const depthCard = document.querySelector('.depth-card');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    let curtainOpening = false;
+    let stackOpening = false;
 
     document.querySelectorAll('#projects .card-link').forEach(link => {
       link.addEventListener('click', e => {
-        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || curtainOpening) return;
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || stackOpening) return;
         if (reducedMotion.matches) return;
 
         e.preventDefault();
-        curtainOpening = true;
-        curtainSplit.classList.add('active');
+        stackOpening = true;
+        const clone = link.closest('.card').cloneNode(true);
+        clone.querySelectorAll('.card-link').forEach(cloneLink => cloneLink.removeAttribute('href'));
+        depthCard.replaceChildren(...clone.childNodes);
+        depthCard.className = 'depth-card card';
+        depthStack.offsetWidth;
+        depthStack.classList.add('active');
         setTimeout(() => { window.location.href = link.href; }, 650);
       });
     });
