@@ -500,39 +500,81 @@
       transform: translateX(4px);
     }
 
-    .portal-zoom {
+    .curtain-split {
       position: fixed;
       inset: 0;
       z-index: 50;
       pointer-events: none;
       opacity: 0;
-      background: radial-gradient(circle at var(--portal-x, 50%) var(--portal-y, 50%), rgba(214, 139, 95, 0.22), rgba(10, 9, 8, 0.96) 48%);
-      transition: opacity .65s ease;
+      display: flex;
+      transition: opacity .15s ease;
     }
 
-    .portal-zoom.active {
+    .curtain-split.active {
       opacity: 1;
     }
 
-    .portal-zoom-card {
-      position: fixed;
-      left: var(--portal-left);
-      top: var(--portal-top);
-      width: var(--portal-width);
-      height: var(--portal-height);
-      overflow: hidden;
-      transform-origin: center center;
-      transition: transform .65s cubic-bezier(.2, .8, .2, 1), opacity .65s ease;
+    .curtain-panel {
+      position: relative;
+      width: 50%;
+      height: 100%;
+      background: var(--bg);
+      transition: transform .65s cubic-bezier(.76, 0, .24, 1);
     }
 
-    .portal-zoom.active .portal-zoom-card {
-      transform: scale(7);
+    .curtain-panel::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(214, 139, 95, 0.7);
+    }
+
+    .curtain-left {
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .curtain-left::after {
+      right: 0;
+    }
+
+    .curtain-right {
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .curtain-right::after {
+      left: 0;
+    }
+
+    .curtain-split.active .curtain-left {
+      transform: translateX(-100%);
+    }
+
+    .curtain-split.active .curtain-right {
+      transform: translateX(100%);
+    }
+
+    .curtain-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 1;
+      color: var(--glow-2);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      transform: translate(-50%, -50%);
+      transition: opacity .2s ease;
+    }
+
+    .curtain-split.active .curtain-label {
       opacity: 0;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .portal-zoom,
-      .portal-zoom-card {
+      .curtain-split,
+      .curtain-panel,
+      .curtain-label {
         transition-duration: .01ms;
       }
     }
@@ -650,7 +692,11 @@
 </head>
 
 <body>
-  <div class="portal-zoom" aria-hidden="true"></div>
+  <div class="curtain-split" aria-hidden="true">
+    <span class="curtain-panel curtain-left"></span>
+    <span class="curtain-panel curtain-right"></span>
+    <span class="curtain-label">PROJECT / OPENING</span>
+  </div>
   <div class="page-enter" aria-hidden="true">
     <span class="enter-layer enter-back"></span>
     <span class="enter-layer enter-mid"></span>
@@ -1034,33 +1080,19 @@
       });
     });
 
-    /* ---------------- project portal zoom ---------------- */
-    const portalZoom = document.querySelector('.portal-zoom');
+    /* ---------------- vertical curtain split ---------------- */
+    const curtainSplit = document.querySelector('.curtain-split');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    let portalOpening = false;
+    let curtainOpening = false;
 
     document.querySelectorAll('#projects .card-link').forEach(link => {
       link.addEventListener('click', e => {
-        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || portalOpening) return;
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || curtainOpening) return;
         if (reducedMotion.matches) return;
 
         e.preventDefault();
-        portalOpening = true;
-        const card = link.closest('.card');
-        const bounds = card.getBoundingClientRect();
-        const clone = card.cloneNode(true);
-        clone.className = 'card portal-zoom-card';
-        clone.querySelectorAll('.card-link').forEach(cloneLink => cloneLink.removeAttribute('href'));
-        clone.style.setProperty('--portal-left', `${bounds.left}px`);
-        clone.style.setProperty('--portal-top', `${bounds.top}px`);
-        clone.style.setProperty('--portal-width', `${bounds.width}px`);
-        clone.style.setProperty('--portal-height', `${bounds.height}px`);
-        portalZoom.style.setProperty('--portal-x', `${bounds.left + bounds.width / 2}px`);
-        portalZoom.style.setProperty('--portal-y', `${bounds.top + bounds.height / 2}px`);
-        portalZoom.appendChild(clone);
-        card.style.opacity = '0';
-        portalZoom.offsetWidth;
-        portalZoom.classList.add('active');
+        curtainOpening = true;
+        curtainSplit.classList.add('active');
         setTimeout(() => { window.location.href = link.href; }, 650);
       });
     });
