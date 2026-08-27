@@ -500,6 +500,43 @@
       transform: translateX(4px);
     }
 
+    .portal-zoom {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(circle at var(--portal-x, 50%) var(--portal-y, 50%), rgba(214, 139, 95, 0.22), rgba(10, 9, 8, 0.96) 48%);
+      transition: opacity .65s ease;
+    }
+
+    .portal-zoom.active {
+      opacity: 1;
+    }
+
+    .portal-zoom-card {
+      position: fixed;
+      left: var(--portal-left);
+      top: var(--portal-top);
+      width: var(--portal-width);
+      height: var(--portal-height);
+      overflow: hidden;
+      transform-origin: center center;
+      transition: transform .65s cubic-bezier(.2, .8, .2, 1), opacity .65s ease;
+    }
+
+    .portal-zoom.active .portal-zoom-card {
+      transform: scale(7);
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .portal-zoom,
+      .portal-zoom-card {
+        transition-duration: .01ms;
+      }
+    }
+
     .timeline {
       display: flex;
       flex-direction: column;
@@ -613,6 +650,7 @@
 </head>
 
 <body>
+  <div class="portal-zoom" aria-hidden="true"></div>
   <div class="page-enter" aria-hidden="true">
     <span class="enter-layer enter-back"></span>
     <span class="enter-layer enter-mid"></span>
@@ -993,6 +1031,37 @@
       });
       card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
+      });
+    });
+
+    /* ---------------- project portal zoom ---------------- */
+    const portalZoom = document.querySelector('.portal-zoom');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    let portalOpening = false;
+
+    document.querySelectorAll('#projects .card-link').forEach(link => {
+      link.addEventListener('click', e => {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || portalOpening) return;
+        if (reducedMotion.matches) return;
+
+        e.preventDefault();
+        portalOpening = true;
+        const card = link.closest('.card');
+        const bounds = card.getBoundingClientRect();
+        const clone = card.cloneNode(true);
+        clone.className = 'card portal-zoom-card';
+        clone.querySelectorAll('.card-link').forEach(cloneLink => cloneLink.removeAttribute('href'));
+        clone.style.setProperty('--portal-left', `${bounds.left}px`);
+        clone.style.setProperty('--portal-top', `${bounds.top}px`);
+        clone.style.setProperty('--portal-width', `${bounds.width}px`);
+        clone.style.setProperty('--portal-height', `${bounds.height}px`);
+        portalZoom.style.setProperty('--portal-x', `${bounds.left + bounds.width / 2}px`);
+        portalZoom.style.setProperty('--portal-y', `${bounds.top + bounds.height / 2}px`);
+        portalZoom.appendChild(clone);
+        card.style.opacity = '0';
+        portalZoom.offsetWidth;
+        portalZoom.classList.add('active');
+        setTimeout(() => { window.location.href = link.href; }, 650);
       });
     });
 
