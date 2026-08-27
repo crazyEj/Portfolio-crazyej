@@ -203,6 +203,26 @@
       border-color: var(--glow-1);
     }
 
+    .page-transition {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: var(--bg);
+      pointer-events: none;
+      transform: translateY(100%);
+      transition: transform .5s cubic-bezier(.76, 0, .24, 1);
+    }
+
+    .page-transition.active {
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .page-transition {
+        transition-duration: .01ms;
+      }
+    }
+
     .hint {
       position: absolute;
       bottom: 34px;
@@ -534,6 +554,7 @@
 
 <body>
 
+  <div class="page-transition" aria-hidden="true"></div>
   <canvas id="lines"></canvas>
   <canvas id="three-canvas"></canvas>
   <div class="vignette"></div>
@@ -567,7 +588,7 @@
       <p class="desc">Building thoughtful software and clean, functional interfaces — from data tools to full-stack web
         apps.</p>
       <div class="links">
-        <a href="projects.html" class="link">VIEW PROJECTS <span>→</span></a>
+        <a href="projects.html" class="link" id="projectsLink">VIEW PROJECTS <span>→</span></a>
         <a href="#" class="link" id="contactLink">GET IN TOUCH <span>→</span></a>
       </div>
     </div>
@@ -788,6 +809,17 @@
       requestAnimationFrame(loop);
     }
     loop();
+
+    /* ---------------- page transition ---------------- */
+    const pageTransition = document.querySelector('.page-transition');
+    const projectsLink = document.getElementById('projectsLink');
+
+    projectsLink.addEventListener('click', e => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      pageTransition.classList.add('active');
+      setTimeout(() => { window.location.href = projectsLink.href; }, 500);
+    });
 
     /* ---------------- nav overlay ---------------- */
     const navOverlay  = document.getElementById('navOverlay');
