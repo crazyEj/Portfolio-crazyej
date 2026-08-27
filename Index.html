@@ -207,18 +207,51 @@
       position: fixed;
       inset: 0;
       z-index: 100;
-      background: var(--bg);
       pointer-events: none;
       transform: translateY(100%);
       transition: transform .5s cubic-bezier(.76, 0, .24, 1);
+      overflow: hidden;
     }
 
     .page-transition.active {
       transform: translateY(0);
     }
 
+    .transition-layer {
+      position: absolute;
+      inset: -18%;
+      background: var(--bg);
+      border: 1px solid rgba(214, 139, 95, 0.28);
+      transform: rotate(-7deg);
+      transition: transform .6s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .transition-back {
+      opacity: 0.72;
+      background: linear-gradient(135deg, rgba(214, 139, 95, 0.1), var(--bg) 42%);
+    }
+
+    .transition-mid {
+      opacity: 0.84;
+      transform: translateX(7%) rotate(-7deg);
+      background: linear-gradient(135deg, transparent 34%, rgba(214, 139, 95, 0.16), var(--bg) 68%);
+    }
+
+    .transition-front {
+      transform: translateX(15%) rotate(-7deg);
+      background: var(--bg);
+    }
+
+    .page-transition.active .transition-back { transform: translateX(-5%) rotate(-7deg); }
+    .page-transition.active .transition-mid { transform: translateX(2%) rotate(-7deg); }
+    .page-transition.active .transition-front { transform: translateX(8%) rotate(-7deg); }
+
     @media (prefers-reduced-motion: reduce) {
       .page-transition {
+        transition-duration: .01ms;
+      }
+
+      .transition-layer {
         transition-duration: .01ms;
       }
     }
@@ -554,7 +587,11 @@
 
 <body>
 
-  <div class="page-transition" aria-hidden="true"></div>
+  <div class="page-transition" aria-hidden="true">
+    <span class="transition-layer transition-back"></span>
+    <span class="transition-layer transition-mid"></span>
+    <span class="transition-layer transition-front"></span>
+  </div>
   <canvas id="lines"></canvas>
   <canvas id="three-canvas"></canvas>
   <div class="vignette"></div>
@@ -628,6 +665,7 @@
     const mouse = { x: -9999, y: -9999, down: false };
     let px = 0, py = 0; // parallax -0.5..0.5
     let holdPulse = 0;
+    let touchStartX = 0, touchStartY = 0;
 
     /* ---------------- 2D interactive line field ---------------- */
     const linesCanvas = document.getElementById('lines');
@@ -787,6 +825,7 @@
     addEventListener('mouseup', () => { mouse.down = false; });
     addEventListener('touchstart', e => {
       const tt = e.touches[0]; mouse.x = tt.clientX; mouse.y = tt.clientY;
+      touchStartX = tt.clientX; touchStartY = tt.clientY;
       px = (tt.clientX / W) - 0.5; py = (tt.clientY / H) - 0.5;
       mouse.down = true; blast(tt.clientX, tt.clientY);
     }, { passive: true });
@@ -794,7 +833,13 @@
       const tt = e.touches[0]; mouse.x = tt.clientX; mouse.y = tt.clientY;
       px = (tt.clientX / W) - 0.5; py = (tt.clientY / H) - 0.5;
     }, { passive: true });
-    addEventListener('touchend', () => { mouse.down = false; mouse.x = -9999; mouse.y = -9999; });
+    addEventListener('touchend', e => {
+      const touch = e.changedTouches[0];
+      const swipeX = touch.clientX - touchStartX;
+      const swipeY = touch.clientY - touchStartY;
+      if (swipeX < -70 && Math.abs(swipeX) > Math.abs(swipeY)) startProjectsTransition();
+      mouse.down = false; mouse.x = -9999; mouse.y = -9999;
+    });
 
     /* ---------------- main loop ---------------- */
     function loop() {
@@ -813,12 +858,19 @@
     /* ---------------- page transition ---------------- */
     const pageTransition = document.querySelector('.page-transition');
     const projectsLink = document.getElementById('projectsLink');
+    let isTransitioning = false;
+
+    function startProjectsTransition() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      pageTransition.classList.add('active');
+      setTimeout(() => { window.location.href = projectsLink.href; }, 500);
+    }
 
     projectsLink.addEventListener('click', e => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
-      pageTransition.classList.add('active');
-      setTimeout(() => { window.location.href = projectsLink.href; }, 500);
+      startProjectsTransition();
     });
 
     /* ---------------- nav overlay ---------------- */
