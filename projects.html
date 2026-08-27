@@ -164,14 +164,32 @@
     }
 
     .profile-mark {
-      aspect-ratio: 1;
+      aspect-ratio: 0.78;
       border: 1px solid rgba(214, 139, 95, 0.48);
-      border-radius: 50%;
+      border-radius: 130px 130px 8px 8px;
       display: grid;
       place-items: center;
       position: relative;
       background: radial-gradient(circle at 50% 42%, rgba(214, 139, 95, 0.16), transparent 58%);
       box-shadow: 0 0 70px rgba(214, 139, 95, 0.1);
+    }
+
+    .profile-mark > span:first-child {
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-mark > span:first-child::after {
+      content: "";
+      position: absolute;
+      width: 118px;
+      height: 118px;
+      left: 50%;
+      top: 50%;
+      border: 1px solid rgba(214, 139, 95, 0.8);
+      border-radius: 50%;
+      transform: translate(-16%, -8%);
+      z-index: -1;
     }
 
     .profile-mark::before,
