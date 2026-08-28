@@ -47,8 +47,9 @@
     canvas#lines {
       position: fixed;
       inset: 0;
-      z-index: 0;
-      background: #0D0D0D;
+      z-index: 3;
+      pointer-events: none;
+      background: transparent;
     }
 
     canvas#three-canvas {
@@ -733,7 +734,7 @@
         }
         line.bx += (line.tx - line.bx) * 0.08;
         line.by += (line.ty - line.by) * 0.08;
-        lineCtx.strokeStyle = near ? `rgba(214,139,95,${0.16 + holdPulse * 0.25})` : 'rgba(255,255,255,0.06)';
+        lineCtx.strokeStyle = near ? `rgba(214,139,95,${0.28 + holdPulse * 0.25})` : 'rgba(255,255,255,0.2)';
         lineCtx.lineWidth = near ? 1.2 : 1;
         lineCtx.beginPath();
         lineCtx.moveTo(line.x1, line.y1);
