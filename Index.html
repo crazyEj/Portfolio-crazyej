@@ -211,8 +211,18 @@
       transform: translateY(100%);
       transition: transform .72s cubic-bezier(.76, 0, .24, 1);
       overflow: hidden;
-      background: var(--bg);
-      box-shadow: 0 -24px 42px rgba(0, 0, 0, 0.28);
+      background: #f2f0eb;
+      box-shadow: 0 -18px 38px rgba(0, 0, 0, 0.42);
+    }
+
+    .page-transition::after {
+      content: 'PROJECTS  /  SELECTED WORK';
+      position: absolute;
+      top: 34px;
+      left: 40px;
+      color: #151719;
+      font: 600 11px/1 'JetBrains Mono', monospace;
+      letter-spacing: 0.16em;
     }
 
     .page-transition.active {
@@ -238,7 +248,7 @@
 
     .transition-front {
       display: block;
-      background: linear-gradient(135deg, #15181a 0%, #222629 48%, #101214 100%);
+      background: #f2f0eb;
       box-shadow: inset 0 1px rgba(255, 255, 255, 0.12);
     }
 
