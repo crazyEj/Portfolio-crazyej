@@ -47,7 +47,7 @@
     canvas#lines {
       position: fixed;
       inset: 0;
-      z-index: 3;
+      z-index: 0;
       pointer-events: none;
       background: transparent;
     }
@@ -686,17 +686,17 @@
     function resizeLines() { linesCanvas.width = W; linesCanvas.height = H; }
     resizeLines();
 
-    const NUM = 12;
+    const NUM = 20;
     const lines = [];
-    function corridorPoint(corridor) {
-      if (corridor === 'top') return { x: Math.random() * W, y: -40 + Math.random() * H * 0.22 };
-      if (corridor === 'right') return { x: W * 0.78 + Math.random() * W * 0.22 + 40, y: Math.random() * H };
-      if (corridor === 'bottom') return { x: Math.random() * W, y: H * 0.78 + Math.random() * H * 0.22 + 40 };
-      return { x: -40 + Math.random() * W * 0.22, y: Math.random() * H };
+    function edgePoint() {
+      const side = Math.floor(Math.random() * 4);
+      if (side === 0) return { x: Math.random() * W, y: -60 };
+      if (side === 1) return { x: W + 60, y: Math.random() * H };
+      if (side === 2) return { x: Math.random() * W, y: H + 60 };
+      return { x: -60, y: Math.random() * H };
     }
     for (let i = 0; i < NUM; i++) {
-      const corridor = ['top', 'right', 'bottom', 'left'][i % 4];
-      const a = corridorPoint(corridor), b = corridorPoint(corridor);
+      const a = edgePoint(), b = edgePoint();
       lines.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y, bx: 0, by: 0, tx: 0, ty: 0 });
     }
 
@@ -723,10 +723,10 @@
       lines.forEach(line => {
         const midpointX = (line.x1 + line.x2) / 2, midpointY = (line.y1 + line.y2) / 2;
         const result = distToSegment(mouse.x, mouse.y, line.x1, line.y1, line.x2, line.y2);
-        const radius = 120;
+        const radius = 190;
         const near = result.d < radius;
         if (near) {
-          const force = (1 - result.d / radius) * (24 + holdPulse * 50);
+          const force = (1 - result.d / radius) * (40 + holdPulse * 90);
           const normalX = -(line.y2 - line.y1), normalY = line.x2 - line.x1;
           const normalLength = Math.hypot(normalX, normalY) || 1;
           const direction = ((mouse.x - result.cx) * normalX / normalLength + (mouse.y - result.cy) * normalY / normalLength) < 0 ? 1 : -1;
