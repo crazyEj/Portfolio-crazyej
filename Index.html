@@ -56,7 +56,7 @@
       inset: 0;
       z-index: 1;
       pointer-events: none;
-      background: #0D0D0D;
+      background: transparent;
     }
 
     .vignette {
@@ -752,8 +752,8 @@
 
     /* ---------------- 3D chrome text ---------------- */
     const threeCanvas = document.getElementById('three-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: false, antialias: true });
-    renderer.setClearColor(0x0D0D0D, 1);
+    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: true, antialias: true });
+    renderer.setClearColor(0x0D0D0D, 0);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.setSize(W, H);
 
