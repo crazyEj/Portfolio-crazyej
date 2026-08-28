@@ -47,7 +47,7 @@
     canvas#lines {
       position: fixed;
       inset: 0;
-      z-index: 0;
+      z-index: 1;
       pointer-events: none;
       background: transparent;
     }
@@ -55,7 +55,7 @@
     canvas#three-canvas {
       position: fixed;
       inset: 0;
-      z-index: 1;
+      z-index: 2;
       pointer-events: none;
       background: transparent;
     }
@@ -63,7 +63,7 @@
     .vignette {
       position: fixed;
       inset: 0;
-      z-index: 2;
+      z-index: 3;
       pointer-events: none;
       background: radial-gradient(120% 90% at 50% 55%, transparent 35%, rgba(0, 0, 0, 0.6) 100%);
     }
@@ -236,7 +236,7 @@
     }
 
     .page-transition.active {
-      animation: glitchWipe .72s steps(1, end) forwards;
+      animation: glitchWipe .72s cubic-bezier(.76, 0, .24, 1) forwards;
     }
 
     .transition-layer {
@@ -252,6 +252,7 @@
     .transition-back {
       display: block;
       background: #d68b5f;
+      mix-blend-mode: screen;
     }
 
     .transition-mid {
@@ -267,49 +268,46 @@
     }
 
     .page-transition.active .transition-back {
-      animation: glitchBack .72s steps(6, end) forwards;
+      animation: glitchBack .72s cubic-bezier(.2, .8, .2, 1) forwards;
     }
 
     .page-transition.active .transition-mid {
-      animation: glitchMid .72s steps(8, end) forwards;
+      animation: glitchMid .72s cubic-bezier(.2, .8, .2, 1) forwards;
     }
 
     .page-transition.active .transition-front {
-      animation: glitchFront .72s steps(10, end) forwards;
+      animation: glitchFront .72s cubic-bezier(.2, .8, .2, 1) forwards;
     }
 
     .page-transition.active::before {
-      animation: glitchFlash .72s steps(1, end) forwards;
+      animation: glitchFlash .72s ease-out forwards;
     }
 
     @keyframes glitchWipe {
-      0% { transform: translateY(100%) skewX(0); }
-      18% { transform: translateY(72%) skewX(-2deg); }
-      34% { transform: translateY(46%) skewX(1.5deg); }
-      51% { transform: translateY(20%) skewX(-1deg); }
-      68%, 100% { transform: translateY(0) skewX(0); }
+      0% { transform: translateY(100%); }
+      28% { transform: translateY(48%); }
+      48% { transform: translateY(10%) skewX(-0.8deg); }
+      64%, 100% { transform: translateY(0) skewX(0); }
     }
 
     @keyframes glitchBack {
-      0% { opacity: 0; transform: translate(-12%, 100%); }
-      22% { opacity: 0.85; transform: translate(7%, 52%); }
-      45% { opacity: 0.45; transform: translate(-4%, 18%); }
-      68%, 100% { opacity: 0; transform: translate(0, 0); }
+      0%, 22% { opacity: 0; transform: translateY(100%); }
+      30% { opacity: 0.7; transform: translate(-4%, 46%); }
+      38% { opacity: 0.45; transform: translate(3%, 20%); }
+      47%, 100% { opacity: 0; transform: translate(0, 0); }
     }
 
     @keyframes glitchMid {
-      0% { opacity: 0; transform: translate(14%, 100%); }
-      18% { opacity: 0.9; transform: translate(-8%, 65%); }
-      39% { opacity: 0.65; transform: translate(5%, 31%); }
-      58%, 100% { opacity: 0; transform: translate(0, 0); }
+      0%, 34% { opacity: 0; transform: translateY(100%); }
+      39% { opacity: 0.8; transform: translate(2%, 24%); }
+      46%, 100% { opacity: 0; transform: translate(0, 0); }
     }
 
     @keyframes glitchFront {
       0% { opacity: 0; transform: translateY(100%); }
-      15% { opacity: 1; transform: translateY(78%); }
-      31% { transform: translate(-2%, 41%); }
-      46% { transform: translate(1%, 12%); }
-      62%, 100% { opacity: 1; transform: translate(0, 0); }
+      14% { opacity: 1; transform: translateY(76%); }
+      32% { transform: translateY(38%); }
+      52%, 100% { opacity: 1; transform: translate(0, 0); }
     }
 
     @keyframes glitchFlash {
