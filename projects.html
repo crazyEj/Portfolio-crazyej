@@ -725,6 +725,147 @@
       color: var(--ink);
       border-color: var(--glow-1);
     }
+
+    main {
+      max-width: 1360px;
+      padding: 42px 42px 140px;
+    }
+
+    .page-head {
+      min-height: calc(100vh - 110px);
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      align-items: end;
+      gap: 80px;
+      margin-bottom: 110px;
+      padding: 80px 0 58px;
+    }
+
+    .page-head-content {
+      align-self: center;
+      max-width: 760px;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      margin-bottom: 22px;
+    }
+
+    .page-title {
+      max-width: 760px;
+      font-size: clamp(58px, 9vw, 132px);
+      line-height: 0.92;
+      letter-spacing: -0.055em;
+    }
+
+    .page-sub {
+      margin-top: 28px;
+      max-width: 470px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .profile-mark {
+      width: min(100%, 280px);
+      justify-self: end;
+      margin-bottom: 8px;
+      opacity: 0.88;
+    }
+
+    section {
+      margin-top: 120px;
+    }
+
+    .section-label {
+      margin-bottom: 38px;
+      color: var(--ink);
+    }
+
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      min-height: 270px;
+      padding: 28px 26px;
+      border-radius: 4px;
+      background: rgba(14, 14, 16, 0.86);
+    }
+
+    .card-title {
+      font-size: 16px;
+    }
+
+    .card-desc {
+      max-width: 36em;
+      line-height: 1.75;
+    }
+
+    .timeline {
+      max-width: 1040px;
+      margin-left: auto;
+    }
+
+    .services-head {
+      max-width: 700px;
+    }
+
+    .services-title {
+      font-size: clamp(42px, 7vw, 84px);
+      letter-spacing: -0.045em;
+    }
+
+    .cta-row {
+      justify-content: flex-start;
+      margin-top: 120px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        padding-left: 26px;
+        padding-right: 26px;
+      }
+
+      .page-head {
+        gap: 42px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      main {
+        padding: 28px 20px 90px;
+      }
+
+      .page-head {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 70px 0 30px;
+      }
+
+      .page-head-content {
+        order: 1;
+      }
+
+      .profile-mark {
+        order: 2;
+        justify-self: start;
+        width: 150px;
+      }
+
+      .page-title {
+        font-size: clamp(52px, 16vw, 82px);
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
