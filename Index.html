@@ -163,31 +163,34 @@
     }
 
     .subline {
-      margin-top: 6px;
+      margin-top: 20px;
       font-size: 13px;
       letter-spacing: 0.22em;
       font-weight: 500;
       color: var(--ink);
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
     }
 
     .role {
-      margin-top: 8px;
+      margin-top: 12px;
       font-size: 11px;
       letter-spacing: 0.16em;
       color: var(--dim);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
     }
 
     .desc {
-      margin-top: 26px;
+      margin-top: 30px;
       max-width: 420px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       line-height: 1.7;
-      color: var(--dim);
+      color: #c2beb5;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
     }
 
     .links {
-      margin-top: 34px;
+      margin-top: 38px;
       display: flex;
       gap: 36px;
       pointer-events: all;
@@ -734,8 +737,8 @@
         }
         line.bx += (line.tx - line.bx) * 0.08;
         line.by += (line.ty - line.by) * 0.08;
-        lineCtx.strokeStyle = near ? `rgba(214,139,95,${0.28 + holdPulse * 0.25})` : 'rgba(255,255,255,0.2)';
-        lineCtx.lineWidth = near ? 1.2 : 1;
+        lineCtx.strokeStyle = near ? `rgba(214,139,95,${0.24 + holdPulse * 0.2})` : 'rgba(255,255,255,0.11)';
+        lineCtx.lineWidth = near ? 1.1 : 0.8;
         lineCtx.beginPath();
         lineCtx.moveTo(line.x1, line.y1);
         lineCtx.quadraticCurveTo(midpointX + line.bx, midpointY + line.by, line.x2, line.y2);
@@ -769,7 +772,7 @@
     const rim = new THREE.DirectionalLight(0x8fb4ff, 0.35);
     rim.position.set(6, -4, -8);
     scene.add(rim);
-    const glowLight = new THREE.PointLight(0xd68b5f, 2.8, 46, 2);
+    const glowLight = new THREE.PointLight(0xd68b5f, 1.7, 46, 2);
     glowLight.position.set(0, -4, 8);
     scene.add(glowLight);
 
@@ -806,7 +809,7 @@
       const gx = Math.sin(t * 0.6) * 10;
       const gy = Math.cos(t * 0.4) * 4 - 2;
       glowLight.position.set(gx, gy, 7);
-      glowLight.intensity = 2.8 + Math.sin(t * 0.6) * 1 + holdPulse * 7;
+      glowLight.intensity = 1.7 + Math.sin(t * 0.6) * 0.45 + holdPulse * 5;
 
       camera.position.z = 34 - holdPulse * 2;
       renderer.render(scene, camera);
