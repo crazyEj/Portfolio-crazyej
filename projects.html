@@ -46,13 +46,6 @@
       color: inherit;
     }
 
-    canvas#lines {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      background: #0D0D0D;
-    }
-
     .vignette {
       position: fixed;
       inset: 0;
@@ -740,7 +733,6 @@
     <span class="enter-layer enter-front"></span>
   </div>
 
-  <canvas id="lines"></canvas>
   <div class="vignette"></div>
 
   <nav>
@@ -1036,70 +1028,6 @@
   </footer>
 
   <script>
-    /* ---------------- interactive background lines ---------------- */
-    const linesCanvas = document.getElementById('lines');
-    const ctx = linesCanvas.getContext('2d');
-    let W = innerWidth, H = document.documentElement.scrollHeight;
-    const mouse = { x: -9999, y: -9999 };
-    function resize() { W = innerWidth; H = Math.max(document.documentElement.scrollHeight, innerHeight); linesCanvas.width = W; linesCanvas.height = H; }
-    resize();
-    addEventListener('resize', resize);
-    new ResizeObserver(resize).observe(document.body);
-
-    const NUM = 16;
-    const lines = [];
-    function edgePoint() {
-      const side = Math.floor(Math.random() * 4);
-      if (side === 0) return { x: Math.random() * W, y: -60 };
-      if (side === 1) return { x: W + 60, y: Math.random() * H };
-      if (side === 2) return { x: Math.random() * W, y: H + 60 };
-      return { x: -60, y: Math.random() * H };
-    }
-    for (let i = 0; i < NUM; i++) {
-      const a = edgePoint(), b = edgePoint();
-      lines.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y, bx: 0, by: 0, tx: 0, ty: 0 });
-    }
-    addEventListener('mousemove', e => { mouse.x = e.pageX; mouse.y = e.pageY; });
-    addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
-
-    function distToSegment(px, py, x1, y1, x2, y2) {
-      const dx = x2 - x1, dy = y2 - y1;
-      const len2 = dx * dx + dy * dy || 1;
-      let t = ((px - x1) * dx + (py - y1) * dy) / len2;
-      t = Math.max(0, Math.min(1, t));
-      const cx = x1 + t * dx, cy = y1 + t * dy;
-      return { d: Math.hypot(px - cx, py - cy), cx, cy };
-    }
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      lines.forEach(l => {
-        const mx = (l.x1 + l.x2) / 2, my = (l.y1 + l.y2) / 2;
-        const res = distToSegment(mouse.x, mouse.y, l.x1, l.y1, l.x2, l.y2);
-        const radius = 170;
-        let near = false;
-        if (res.d < radius) {
-          near = true;
-          const force = (1 - res.d / radius) * 46;
-          const nx = -(l.y2 - l.y1), ny = (l.x2 - l.x1);
-          const nlen = Math.hypot(nx, ny) || 1;
-          const dirSign = ((mouse.x - res.cx) * nx / nlen + (mouse.y - res.cy) * ny / nlen) < 0 ? 1 : -1;
-          l.tx = (nx / nlen) * force * dirSign;
-          l.ty = (ny / nlen) * force * dirSign;
-        } else { l.tx = 0; l.ty = 0; }
-        l.bx += (l.tx - l.bx) * 0.08;
-        l.by += (l.ty - l.by) * 0.08;
-        const cx = mx + l.bx, cy = my + l.by;
-        ctx.strokeStyle = near ? 'rgba(214,139,95,0.22)' : 'rgba(255,255,255,0.05)';
-        ctx.lineWidth = near ? 1.2 : 1;
-        ctx.beginPath();
-        ctx.moveTo(l.x1, l.y1);
-        ctx.quadraticCurveTo(cx, cy, l.x2, l.y2);
-        ctx.stroke();
-      });
-      requestAnimationFrame(draw);
-    }
-    draw();
-
     /* ---------------- card tilt + cursor spotlight ---------------- */
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('mousemove', e => {
