@@ -12,7 +12,7 @@
     rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0908;
+      --bg: #0D0D0D;
       --ink: #f3f1ec;
       --dim: #a8a59b;
       --dimmer: #6b685f;
@@ -28,7 +28,7 @@
 
     html,
     body {
-      background: var(--bg);
+      background: #0D0D0D;
       color: var(--ink);
       font-family: 'JetBrains Mono', monospace;
     }
@@ -36,12 +36,19 @@
     body {
       position: relative;
       overflow-x: hidden;
+      min-height: 100vh;
+      isolation: isolate;
+    }
+
+    .home-screen {
+      background: #0D0D0D;
     }
 
     canvas#lines {
       position: fixed;
       inset: 0;
       z-index: 0;
+      background: #0D0D0D;
     }
 
     canvas#three-canvas {
@@ -49,6 +56,7 @@
       inset: 0;
       z-index: 1;
       pointer-events: none;
+      background: #0D0D0D;
     }
 
     .vignette {
@@ -211,7 +219,7 @@
       transform: translateY(100%);
       transition: transform .72s cubic-bezier(.76, 0, .24, 1);
       overflow: hidden;
-      background: #f2f0eb;
+      background: #0D0D0D;
       box-shadow: 0 -18px 38px rgba(0, 0, 0, 0.42);
     }
 
@@ -220,7 +228,7 @@
       position: absolute;
       top: 34px;
       left: 40px;
-      color: #151719;
+      color: #f3f1ec;
       font: 600 11px/1 'JetBrains Mono', monospace;
       letter-spacing: 0.16em;
     }
@@ -232,7 +240,7 @@
     .transition-layer {
       position: absolute;
       inset: 0;
-      background: var(--bg);
+      background: #0D0D0D;
       border: 0;
       transform: none;
       transition: none;
@@ -248,7 +256,7 @@
 
     .transition-front {
       display: block;
-      background: #f2f0eb;
+      background: #0D0D0D;
       box-shadow: inset 0 1px rgba(255, 255, 255, 0.12);
     }
 
@@ -751,7 +759,8 @@
 
     /* ---------------- 3D chrome text ---------------- */
     const threeCanvas = document.getElementById('three-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: false, antialias: true });
+    renderer.setClearColor(0x0D0D0D, 1);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.setSize(W, H);
 
