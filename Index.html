@@ -942,10 +942,6 @@
       startProjectsTransition();
     }));
 
-    addEventListener('wheel', e => {
-      if (e.deltaY > 24) startProjectsTransition();
-    }, { passive: true });
-
     /* ---------------- nav overlay ---------------- */
     const navOverlay  = document.getElementById('navOverlay');
     const menuBtn     = document.getElementById('menuBtn');
