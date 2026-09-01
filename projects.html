@@ -369,6 +369,7 @@
       will-change: transform;
       opacity: 0;
       transform: translateY(24px);
+      cursor: pointer;
     }
 
     .card.in-view {
@@ -1250,14 +1251,19 @@
       depthStack.setAttribute('aria-hidden', 'true');
     }
 
-    document.querySelectorAll('#projects .card-link').forEach(link => {
-      link.addEventListener('click', e => {
-        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || stackOpening) return;
+    document.querySelectorAll('#projects .card').forEach(card => {
+      card.addEventListener('click', e => {
+        const isButtonClick = e.target.closest('.card-link');
+        if (isButtonClick) return;
+        if (stackOpening) return;
         if (reducedMotion.matches) return;
+
+        const link = card.querySelector('.card-link');
+        if (!link) return;
 
         e.preventDefault();
         stackOpening = true;
-        const clone = link.closest('.card').cloneNode(true);
+        const clone = card.cloneNode(true);
         const cardLink = clone.querySelector('.card-link');
         if (cardLink) {
           cardLink.setAttribute('href', link.getAttribute('href'));
