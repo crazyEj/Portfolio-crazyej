@@ -561,7 +561,7 @@
     }
 
     .depth-card .card-link {
-      pointer-events: none;
+      pointer-events: auto;
     }
 
     .depth-stack.active .depth-back {
@@ -1242,10 +1242,8 @@
     const depthClose = document.querySelector('.depth-close');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     let stackOpening = false;
-    let navigationTimer;
 
     function closeDepthStack() {
-      clearTimeout(navigationTimer);
       depthStack.classList.remove('active');
       depthCard.replaceChildren();
       stackOpening = false;
@@ -1260,18 +1258,27 @@
         e.preventDefault();
         stackOpening = true;
         const clone = link.closest('.card').cloneNode(true);
-        clone.querySelectorAll('.card-link').forEach(cloneLink => cloneLink.removeAttribute('href'));
+        const cardLink = clone.querySelector('.card-link');
+        if (cardLink) {
+          cardLink.setAttribute('href', link.getAttribute('href'));
+          cardLink.setAttribute('target', '_blank');
+          cardLink.setAttribute('rel', 'noopener');
+          cardLink.textContent = 'VIEW ON GITHUB';
+        }
+
         depthCard.replaceChildren(...clone.childNodes);
         depthCard.className = 'depth-card card';
         depthStack.offsetWidth;
         depthStack.classList.add('active');
         depthStack.setAttribute('aria-hidden', 'false');
         depthClose.focus();
-        navigationTimer = setTimeout(() => { window.location.href = link.href; }, 1100);
       });
     });
 
     depthClose.addEventListener('click', closeDepthStack);
+    depthStack.addEventListener('click', e => {
+      if (e.target === depthStack) closeDepthStack();
+    });
     addEventListener('keydown', e => {
       if (e.key === 'Escape' && stackOpening) closeDepthStack();
     });
