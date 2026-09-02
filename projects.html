@@ -1187,8 +1187,8 @@
       const a = edgePoint(), b = edgePoint();
       lines.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y, bx: 0, by: 0, tx: 0, ty: 0 });
     }
-    addEventListener('mousemove', e => { mouse.x = e.pageX; mouse.y = e.pageY; });
-    addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    addEventListener('mousemove', e => { mouse.x = e.pageX; mouse.y = e.pageY; }, { passive: true });
+    addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; }, { passive: true });
 
     function drawLines() {
       lineCtx.clearRect(0, 0, W, H);
@@ -1221,20 +1221,33 @@
     drawLines();
 
     /* ---------------- card tilt + cursor spotlight ---------------- */
+    const cardCache = new Map();
+    let tiltTimeout;
+    
     document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        cardCache.set(card, card.getBoundingClientRect());
+      }, { passive: true });
+      
       card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;
-        const py = (e.clientY - r.top) / r.height;
-        card.style.setProperty('--mx', (px * 100) + '%');
-        card.style.setProperty('--my', (py * 100) + '%');
-        const rx = (py - 0.5) * -8;
-        const ry = (px - 0.5) * 10;
-        card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
-      });
+        clearTimeout(tiltTimeout);
+        tiltTimeout = setTimeout(() => {
+          const r = cardCache.get(card) || card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width;
+          const py = (e.clientY - r.top) / r.height;
+          card.style.setProperty('--mx', (px * 100) + '%');
+          card.style.setProperty('--my', (py * 100) + '%');
+          const rx = (py - 0.5) * -8;
+          const ry = (px - 0.5) * 10;
+          card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+        }, 0);
+      }, { passive: true });
+      
       card.addEventListener('mouseleave', () => {
+        clearTimeout(tiltTimeout);
         card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
-      });
+        cardCache.delete(card);
+      }, { passive: true });
     });
 
     /* ---------------- overlapping depth stack ---------------- */

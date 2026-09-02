@@ -880,16 +880,16 @@
       resizeLines();
       resizeThree();
     }
-    addEventListener('resize', onResize);
+    addEventListener('resize', onResize, { passive: true });
 
     addEventListener('mousemove', e => {
       mouse.x = e.clientX; mouse.y = e.clientY;
       px = (e.clientX / W) - 0.5;
       py = (e.clientY / H) - 0.5;
-    });
-    addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
-    addEventListener('mousedown', e => { mouse.down = true; blast(e.clientX, e.clientY); });
-    addEventListener('mouseup', () => { mouse.down = false; });
+    }, { passive: true });
+    addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; }, { passive: true });
+    addEventListener('mousedown', e => { mouse.down = true; blast(e.clientX, e.clientY); }, { passive: true });
+    addEventListener('mouseup', () => { mouse.down = false; }, { passive: true });
     addEventListener('touchstart', e => {
       const tt = e.touches[0]; mouse.x = tt.clientX; mouse.y = tt.clientY;
       touchStartX = tt.clientX; touchStartY = tt.clientY;
@@ -906,7 +906,7 @@
       const swipeY = touch.clientY - touchStartY;
       if (swipeX < -70 && Math.abs(swipeX) > Math.abs(swipeY)) startProjectsTransition();
       mouse.down = false; mouse.x = -9999; mouse.y = -9999;
-    });
+    }, { passive: true });
 
     /* ---------------- main loop ---------------- */
     function loop() {
