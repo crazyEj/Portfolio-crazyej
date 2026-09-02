@@ -931,13 +931,21 @@
     /* ---------------- page transition ---------------- */
     const pageTransition = document.querySelector('.page-transition');
     const projectsLink = document.getElementById('projectsLink');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     let isTransitioning = false;
 
     function startProjectsTransition() {
       if (isTransitioning) return;
       isTransitioning = true;
+      if (reducedMotion.matches) {
+        window.location.href = projectsLink.href;
+        return;
+      }
+
       pageTransition.classList.add('active');
-      setTimeout(() => { window.location.href = projectsLink.href; }, 720);
+      pageTransition.addEventListener('animationend', () => {
+        window.location.href = projectsLink.href;
+      }, { once: true });
     }
 
     document.querySelectorAll('a[href="projects.html"]').forEach(link => link.addEventListener('click', e => {
