@@ -237,7 +237,7 @@
       position: absolute;
       inset: 0;
       z-index: 4;
-      background: #f3f1ec;
+      background: transparent;
       opacity: 0;
     }
 
@@ -262,8 +262,7 @@
     }
 
     .transition-mid {
-      display: block;
-      background: #f3f1ec;
+      display: none;
     }
 
     .transition-front {
@@ -286,7 +285,7 @@
     }
 
     .page-transition.active::before {
-      animation: glitchFlash .72s ease-out forwards;
+      animation: none;
     }
 
     @keyframes slideAcross {
