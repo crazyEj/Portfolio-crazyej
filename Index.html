@@ -230,6 +230,8 @@
       overflow: hidden;
       background: #0D0D0D;
       box-shadow: 0 -16px 34px rgba(0, 0, 0, 0.5);
+      will-change: transform;
+      contain: paint;
     }
 
     .page-transition::before {
@@ -242,7 +244,7 @@
     }
 
     .page-transition.active {
-      animation: slideAcross .72s cubic-bezier(.76, 0, .24, 1) forwards;
+      animation: slideAcross .52s cubic-bezier(.22, .8, .24, 1) forwards;
     }
 
     .transition-layer {
@@ -256,9 +258,7 @@
     }
 
     .transition-back {
-      display: block;
-      background: #d68b5f;
-      mix-blend-mode: screen;
+      display: none;
     }
 
     .transition-mid {
@@ -273,7 +273,7 @@
     }
 
     .page-transition.active .transition-back {
-      animation: glitchBack .72s cubic-bezier(.2, .8, .2, 1) forwards;
+      animation: none;
     }
 
     .page-transition.active .transition-mid {
@@ -281,7 +281,7 @@
     }
 
     .page-transition.active .transition-front {
-      animation: glitchFront .72s cubic-bezier(.2, .8, .2, 1) forwards;
+      animation: none;
     }
 
     .page-transition.active::before {
@@ -290,9 +290,7 @@
 
     @keyframes slideAcross {
       0% { transform: translateX(100%); }
-      28% { transform: translateX(48%); }
-      48% { transform: translateX(10%) skewY(-0.8deg); }
-      64%, 100% { transform: translateX(0) skewY(0); }
+      100% { transform: translateX(0); }
     }
 
     @keyframes glitchBack {
@@ -936,7 +934,7 @@
       if (isTransitioning) return;
       isTransitioning = true;
       pageTransition.classList.add('active');
-      setTimeout(() => { window.location.href = projectsLink.href; }, 720);
+      setTimeout(() => { window.location.href = projectsLink.href; }, 520);
     }
 
     document.querySelectorAll('a[href="projects.html"]').forEach(link => link.addEventListener('click', e => {
