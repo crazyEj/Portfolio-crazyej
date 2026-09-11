@@ -4,40 +4,60 @@ Personal portfolio for Erick James Sibayan, focused on data analysis, ecommerce,
 
 ## Pages
 
-- `Index.html` - landing page with the hero section, project navigation, contact modal, and animated background.
-- `projects.html` - project previews, experience timeline, services, skills, and external links.
+- `Index.html` - landing page with the hero section, animated background, navigation menu, and contact modal.
+- `projects.html` - project highlights, experience timeline, services, skills, and work details.
 
-The site is built with plain HTML, CSS, and JavaScript. It has no build step or package dependencies.
+This portfolio is built with plain HTML, CSS, and JavaScript. It does not require a framework or package install.
+
+## Current features
+
+- Full-screen menu overlay with hover scaling effects
+- Smooth horizontal page transition between the home page and projects page
+- Project cards that open a preview panel before redirecting to GitHub
+- Contact modal with a form submission flow
+- Profile image placed in the projects page portrait frame (`profile.jpg`)
+- Responsive styling for desktop and smaller screens
 
 ## Run locally
 
-Open `Index.html` directly in a browser, or serve the folder with a local web server:
+Open `Index.html` directly in a browser or serve the folder with a local web server:
 
 ```powershell
 python -m http.server 8000
 ```
 
-Then visit `http://localhost:8000/Index.html`.
+Then visit:
 
-Serving the folder is recommended because it keeps local navigation and external assets consistent with a deployed site.
+```text
+http://localhost:8000/Index.html
+```
 
 ## Customize
 
-Update the content directly in the HTML files:
+Update the following sections directly in the HTML files:
 
-- Edit the hero copy and contact form in `Index.html`.
-- Edit project cards, experience, services, and skills in `projects.html`.
-- Update GitHub, LinkedIn, and resume links wherever they appear.
-- Adjust colors, typography, layout, and motion in each file's embedded `<style>` block.
+- Hero text and intro details in `Index.html`
+- Navigation labels and the overlay menu in `Index.html`
+- Project cards, timeline items, and services in `projects.html`
+- Social links, resume link, and contact links throughout the site
+- Colors, spacing, and motion in each file's embedded CSS block
 
-Project cards open an in-page preview first. The preview includes a GitHub action so visitors can choose whether to continue to the repository.
+## Profile image
+
+The portrait used in the projects page is stored as:
+
+```text
+profile.jpg
+```
+
+It is referenced in `projects.html` and is used in the profile frame near the top of the project timeline page.
 
 ## Files
 
 ```text
 Index.html
 projects.html
+profile.jpg
 Resume.pdf
 README.md
 ```
-
