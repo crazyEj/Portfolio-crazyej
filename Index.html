@@ -697,7 +697,6 @@
     const mouse = { x: -9999, y: -9999, down: false };
     let px = 0, py = 0; // parallax -0.5..0.5
     let holdPulse = 0;
-    let touchStartX = 0, touchStartY = 0;
 
     const linesCanvas = document.getElementById('lines');
     const lineCtx = linesCanvas.getContext('2d');
@@ -852,7 +851,6 @@
     addEventListener('mouseup', () => { mouse.down = false; }, { passive: true });
     addEventListener('touchstart', e => {
       const tt = e.touches[0]; mouse.x = tt.clientX; mouse.y = tt.clientY;
-      touchStartX = tt.clientX; touchStartY = tt.clientY;
       px = (tt.clientX / W) - 0.5; py = (tt.clientY / H) - 0.5;
       mouse.down = true; blast(tt.clientX, tt.clientY);
     }, { passive: true });
@@ -860,11 +858,7 @@
       const tt = e.touches[0]; mouse.x = tt.clientX; mouse.y = tt.clientY;
       px = (tt.clientX / W) - 0.5; py = (tt.clientY / H) - 0.5;
     }, { passive: true });
-    addEventListener('touchend', e => {
-      const touch = e.changedTouches[0];
-      const swipeX = touch.clientX - touchStartX;
-      const swipeY = touch.clientY - touchStartY;
-      if (swipeX < -70 && Math.abs(swipeX) > Math.abs(swipeY)) startProjectsTransition();
+    addEventListener('touchend', () => {
       mouse.down = false; mouse.x = -9999; mouse.y = -9999;
     }, { passive: true });
 
