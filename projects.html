@@ -511,7 +511,7 @@
     }
 
     .depth-stack::after {
-      content: "PROJECT / OPENING";
+      content: "ITEM / OPENING";
       position: absolute;
       left: 50%;
       top: calc(50% + 190px);
@@ -872,7 +872,7 @@
     <span class="depth-plane depth-back"></span>
     <span class="depth-plane depth-mid"></span>
     <div class="depth-card"></div>
-    <button class="depth-close" type="button" aria-label="Exit project opening">EXIT</button>
+    <button class="depth-close" type="button" aria-label="Exit preview">EXIT</button>
   </div>
   <div class="page-enter" aria-hidden="true">
     <span class="enter-layer enter-back"></span>
@@ -1291,21 +1291,23 @@
       depthStack.setAttribute('aria-hidden', 'true');
     }
 
-    document.querySelectorAll('#projects .card').forEach(card => {
-      card.addEventListener('click', e => {
-        const isButtonClick = e.target.closest('.card-link');
-        if (isButtonClick) return;
-        if (stackOpening) return;
-        if (reducedMotion.matches) return;
+    document.querySelectorAll('#projects .card, #services .card').forEach(card => {
+      const isServiceCard = card.closest('#services');
+      const link = card.querySelector('.card-link');
 
-        const link = card.querySelector('.card-link');
-        if (!link) return;
+      if (isServiceCard) {
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', `Preview ${card.querySelector('.card-title').textContent}`);
+      }
 
-        e.preventDefault();
+      function openCardPreview() {
+        if (stackOpening || reducedMotion.matches) return;
+
         stackOpening = true;
         const clone = card.cloneNode(true);
         const cardLink = clone.querySelector('.card-link');
-        if (cardLink) {
+        if (cardLink && link) {
           cardLink.setAttribute('href', link.getAttribute('href'));
           cardLink.setAttribute('target', '_blank');
           cardLink.setAttribute('rel', 'noopener');
@@ -1318,7 +1320,22 @@
         depthStack.classList.add('active');
         depthStack.setAttribute('aria-hidden', 'false');
         depthClose.focus();
+      }
+
+      card.addEventListener('click', e => {
+        const isButtonClick = e.target.closest('.card-link');
+        if (isButtonClick) return;
+        e.preventDefault();
+        openCardPreview();
       });
+
+      if (isServiceCard) {
+        card.addEventListener('keydown', e => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          openCardPreview();
+        });
+      }
     });
 
     depthClose.addEventListener('click', closeDepthStack);
