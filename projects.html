@@ -1319,7 +1319,7 @@
         depthStack.offsetWidth;
         depthStack.classList.add('active');
         depthStack.setAttribute('aria-hidden', 'false');
-        depthClose.focus();
+        depthClose.focus({ preventScroll: true });
       }
 
       card.addEventListener('click', e => {
