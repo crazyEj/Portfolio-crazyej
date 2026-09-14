@@ -555,6 +555,7 @@
       background: var(--card);
       opacity: 0;
       transform: translate(-50%, -50%) scale(.72) rotate(2deg);
+      z-index: 1;
     }
 
     .depth-card .card-link {
@@ -1304,6 +1305,7 @@
       function openCardPreview() {
         if (stackOpening || reducedMotion.matches) return;
 
+        const currentScrollY = window.scrollY;
         stackOpening = true;
         const clone = card.cloneNode(true);
         const cardLink = clone.querySelector('.card-link');
@@ -1320,6 +1322,7 @@
         depthStack.classList.add('active');
         depthStack.setAttribute('aria-hidden', 'false');
         depthClose.focus({ preventScroll: true });
+        window.scrollTo(0, currentScrollY);
       }
 
       card.addEventListener('click', e => {
