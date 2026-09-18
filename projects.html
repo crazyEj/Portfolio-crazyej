@@ -658,6 +658,7 @@
       background: var(--bg);
       transform: translateX(-50%);
       z-index: 1;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease, background .25s ease;
     }
 
     .tl-item.latest::after {
@@ -687,10 +688,22 @@
 
     .tl-item:hover::before {
       transform: scaleY(1);
+      opacity: 0.5;
     }
 
     .tl-item:hover {
       background: rgba(201, 123, 90, 0.03);
+    }
+
+    .tl-item:hover::after {
+      transform: translateX(-50%) scale(1.28);
+      border-color: var(--glow-1);
+      background: var(--glow-1);
+      box-shadow: 0 0 0 4px rgba(214, 139, 95, 0.12), 0 0 16px rgba(214, 139, 95, 0.45);
+    }
+
+    .tl-item.latest:hover::after {
+      transform: translateX(-50%) scale(1.12);
     }
 
     .tl-item:last-child {
@@ -712,6 +725,10 @@
 
     .tl-item:hover .tl-date {
       color: var(--glow-1);
+    }
+
+    .tl-item:hover .tl-role {
+      color: var(--glow-2);
     }
 
     .tl-role {
