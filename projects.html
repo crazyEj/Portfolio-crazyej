@@ -348,23 +348,6 @@
         grid-template-columns: 1fr;
       }
 
-      .timeline::before {
-        left: 10px;
-        top: 26px;
-        bottom: 26px;
-      }
-
-      .tl-item {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding-left: 32px;
-      }
-
-      .tl-item::after,
-      .tl-item.latest::after {
-        left: 10px;
-        top: 28px;
-      }
     }
 
     .card {
@@ -637,12 +620,13 @@
       flex-direction: column;
       gap: 0;
       position: relative;
+      --timeline-axis: 154px;
     }
 
     .timeline::before {
       content: "";
       position: absolute;
-      left: 150px;
+      left: var(--timeline-axis);
       top: 30px;
       bottom: 30px;
       width: 1px;
@@ -665,7 +649,7 @@
     .tl-item::after {
       content: "";
       position: absolute;
-      left: 145px;
+      left: var(--timeline-axis);
       top: 31px;
       width: 11px;
       height: 11px;
@@ -706,7 +690,6 @@
     }
 
     .tl-item:hover {
-      padding-left: 32px;
       background: rgba(201, 123, 90, 0.03);
     }
 
@@ -919,6 +902,26 @@
 
       .grid {
         grid-template-columns: 1fr;
+      }
+
+      .timeline {
+        --timeline-axis: 10px;
+      }
+
+      .timeline::before {
+        top: 26px;
+        bottom: 26px;
+      }
+
+      .tl-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding-left: 32px;
+      }
+
+      .tl-item::after,
+      .tl-item.latest::after {
+        top: 28px;
       }
     }
   </style>
