@@ -246,7 +246,7 @@
     }
 
     .page-transition.active {
-      animation: smoothOverlay .52s cubic-bezier(.22, 1, .36, 1) forwards;
+      animation: smoothOverlay .9s cubic-bezier(.16, 1, .3, 1) forwards;
     }
 
     .page-transition.active::before {
@@ -278,9 +278,12 @@
     @keyframes smoothOverlay {
       0% {
         opacity: 0;
-        transform: scaleX(1.04);
+        transform: scaleX(1.06);
       }
       18% {
+        opacity: 0.7;
+      }
+      55% {
         opacity: 1;
       }
       100% {
@@ -898,7 +901,7 @@
       pageTransition.classList.remove('active');
       void pageTransition.offsetWidth;
       pageTransition.classList.add('active');
-      setTimeout(() => { window.location.href = projectsLink.href; }, 520);
+      setTimeout(() => { window.location.href = projectsLink.href; }, 880);
     }
 
     document.querySelectorAll('a[href="projects.html"]').forEach(link => link.addEventListener('click', e => {
