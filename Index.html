@@ -229,11 +229,13 @@
       background: #0D0D0D;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
       opacity: 0;
-      transform: scaleX(1.04);
+      transform: scaleX(1.025) translateZ(0);
       transform-origin: left center;
       overflow: hidden;
       will-change: opacity, transform;
       contain: paint;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     .page-transition::before {
@@ -246,7 +248,7 @@
     }
 
     .page-transition.active {
-      animation: smoothOverlay .9s cubic-bezier(.16, 1, .3, 1) forwards;
+      animation: smoothOverlay 1.1s cubic-bezier(.19, 1, .22, 1) forwards;
     }
 
     .page-transition.active::before {
@@ -278,17 +280,17 @@
     @keyframes smoothOverlay {
       0% {
         opacity: 0;
-        transform: scaleX(1.06);
+        transform: scaleX(1.04) translateZ(0);
       }
       18% {
-        opacity: 0.7;
+        opacity: 0.72;
       }
-      55% {
+      60% {
         opacity: 1;
       }
       100% {
         opacity: 1;
-        transform: scaleX(1);
+        transform: scaleX(1) translateZ(0);
       }
     }
 
@@ -877,6 +879,7 @@
     }, { passive: true });
 
     /* ---------------- main loop ---------------- */
+    let animationFrameId;
     function loop() {
       if (mouse.down) {
         holdPulse = Math.min(holdPulse + 0.03, 1);
@@ -886,9 +889,9 @@
       }
       drawLines();
       renderThree();
-      requestAnimationFrame(loop);
+      animationFrameId = requestAnimationFrame(loop);
     }
-    loop();
+    animationFrameId = requestAnimationFrame(loop);
 
     /* ---------------- page transition ---------------- */
     const pageTransition = document.querySelector('.page-transition');
@@ -898,10 +901,11 @@
     function startProjectsTransition() {
       if (isTransitioning) return;
       isTransitioning = true;
+      cancelAnimationFrame(animationFrameId);
       pageTransition.classList.remove('active');
       void pageTransition.offsetWidth;
       pageTransition.classList.add('active');
-      setTimeout(() => { window.location.href = projectsLink.href; }, 880);
+      setTimeout(() => { window.location.href = projectsLink.href; }, 1100);
     }
 
     document.querySelectorAll('a[href="projects.html"]').forEach(link => link.addEventListener('click', e => {
