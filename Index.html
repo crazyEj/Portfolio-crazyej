@@ -248,7 +248,7 @@
     }
 
     .page-transition.active {
-      animation: smoothOverlay 1.1s cubic-bezier(.19, 1, .22, 1) forwards;
+      animation: smoothOverlay .5s cubic-bezier(.22, 1, .36, 1) forwards;
     }
 
     .page-transition.active::before {
@@ -905,7 +905,7 @@
       pageTransition.classList.remove('active');
       void pageTransition.offsetWidth;
       pageTransition.classList.add('active');
-      setTimeout(() => { window.location.href = projectsLink.href; }, 1100);
+      setTimeout(() => { window.location.href = projectsLink.href; }, 500);
     }
 
     document.querySelectorAll('a[href="projects.html"]').forEach(link => link.addEventListener('click', e => {
