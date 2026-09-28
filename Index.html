@@ -7,6 +7,7 @@
   <title>Erick James Sibayan — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="prefetch" href="projects.html">
   <link
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
@@ -248,7 +249,7 @@
     }
 
     .page-transition.active {
-      animation: smoothOverlay .25s cubic-bezier(.22, 1, .36, 1) forwards;
+      animation: smoothOverlay .15s cubic-bezier(.22, 1, .36, 1) forwards;
     }
 
     .page-transition.active::before {
@@ -905,7 +906,7 @@
       pageTransition.classList.remove('active');
       void pageTransition.offsetWidth;
       pageTransition.classList.add('active');
-      setTimeout(() => { window.location.href = projectsLink.href; }, 250);
+      setTimeout(() => { window.location.href = projectsLink.href; }, 150);
     }
 
     document.querySelectorAll('a[href="projects.html"]').forEach(link => link.addEventListener('click', e => {
