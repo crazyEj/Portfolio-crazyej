@@ -1,61 +1,47 @@
-# Portfolio
+# Erick James Sibayan Portfolio
 
-Personal portfolio for Erick James Sibayan, focused on data analysis, ecommerce, product engineering, and automation.
+A static, two-page portfolio focused on data analysis, ecommerce, product engineering, and automation. Built with HTML, CSS, and JavaScript; no framework or package installation is required.
 
 ## Pages
 
-- `Index.html` - landing page with the hero section, animated background, navigation menu, and contact modal.
-- `projects.html` - project highlights, experience timeline, services, skills, and work details.
+- `index.html` - home page with the hero, animated background, navigation, and contact modal.
+- `projects.html` - project previews, experience timeline, and services and skills.
 
-This portfolio is built with plain HTML, CSS, and JavaScript. It does not require a framework or package install.
+## Features
 
-## Current features
-
-- Full-screen menu overlay with hover scaling effects
-- Smooth horizontal page transition between the home page and projects page
-- Project cards that open a preview panel before redirecting to GitHub
-- Contact modal with a form submission flow
-- Profile image placed in the projects page portrait frame (`profile.jpg`)
-- Responsive styling for desktop and smaller screens
+- Responsive layouts for desktop and mobile.
+- Native cross-page fade transitions in browsers that support the View Transition API; navigation still works in other browsers.
+- Project and service cards with an interactive preview panel.
+- Experience timeline and profile portrait (`profile.jpg`).
+- Three.js and Google Fonts are loaded from CDNs, so those visual assets require an internet connection.
 
 ## Run locally
 
-Open `Index.html` directly in a browser or serve the folder with a local web server:
+From the portfolio folder, start a local server in PowerShell:
 
 ```powershell
-python -m http.server 8000
+py -m http.server 8000
 ```
 
-Then visit:
+Then open [http://localhost:8000/index.html](http://localhost:8000/index.html) in your browser. Serving the files over HTTP is recommended over opening them directly, especially for external scripts and page transitions.
 
-```text
-http://localhost:8000/Index.html
-```
+## Contact form setup
+
+The home page form posts to Formspree, but its endpoint currently contains the placeholder `MY_FORM_ID`. Replace it with your Formspree form ID in `index.html` before expecting submissions to work.
 
 ## Customize
 
-Update the following sections directly in the HTML files:
+Edit the HTML files directly:
 
-- Hero text and intro details in `Index.html`
-- Navigation labels and the overlay menu in `Index.html`
-- Project cards, timeline items, and services in `projects.html`
-- Social links, resume link, and contact links throughout the site
-- Colors, spacing, and motion in each file's embedded CSS block
-
-## Profile image
-
-The portrait used in the projects page is stored as:
-
-```text
-profile.jpg
-```
-
-It is referenced in `projects.html` and is used in the profile frame near the top of the project timeline page.
+- Hero copy, navigation, and contact form in `index.html`.
+- Project cards, experience entries, services, and skills in `projects.html`.
+- Colors, spacing, and motion in the embedded CSS in each page.
+- Social and resume links in the navigation and footer.
 
 ## Files
 
 ```text
-Index.html
+index.html
 projects.html
 profile.jpg
 Resume.pdf
