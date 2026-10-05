@@ -244,7 +244,7 @@
       text-decoration: none;
       padding-bottom: 8px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-      transition: opacity .2s ease, border-color .2s ease;
+      transition: transform .22s cubic-bezier(.2, .8, .2, 1), border-color .22s ease, text-shadow .22s ease;
     }
 
     .link span {
@@ -253,8 +253,9 @@
     }
 
     .link:hover {
-      opacity: 0.65;
+      transform: translateY(-4px);
       border-color: var(--glow-1);
+      text-shadow: 0 0 14px rgba(214, 139, 95, 0.35);
     }
 
     .hint {
