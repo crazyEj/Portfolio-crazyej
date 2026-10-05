@@ -1,50 +1,53 @@
-# Erick James Sibayan Portfolio
+# Erick James Sibayan | Portfolio
 
-A static, two-page portfolio focused on data analysis, ecommerce, product engineering, and automation. Built with HTML, CSS, and JavaScript; no framework or package installation is required.
+A responsive, two-page portfolio presenting work in data analysis, ecommerce, product engineering, and automation. The site is implemented with static HTML, CSS, and JavaScript and has no build step or package dependencies.
+
+## Technical Overview
+
+- **Markup:** semantic HTML5 for page structure, navigation, forms, and content.
+- **Styling:** CSS custom properties, Grid and Flexbox layouts, responsive media queries, transitions, and reduced-motion handling.
+- **Client-side behavior:** vanilla JavaScript for navigation, modal controls, card previews, pointer interactions, and scroll-triggered reveals.
+- **Browser APIs:** Canvas 2D and `requestAnimationFrame` for animated line backgrounds; `IntersectionObserver` for reveal effects; `ResizeObserver` for canvas sizing; the View Transition API for progressive cross-page transitions.
+- **3D rendering:** Three.js renders the EJS lettering on the home page.
 
 ## Pages
 
-- `index.html` - home page with the hero, animated background, navigation, and contact modal.
-- `projects.html` - project previews, experience timeline, and services and skills.
+- `index.html` - hero, animated background, navigation menu, and contact modal.
+- `projects.html` - project cards, experience timeline, services, and skills.
 
-## Features
+Project and service cards open an in-page preview panel. The preview provides a path to the related GitHub destination where available. Cross-page transitions use the View Transition API when supported; ordinary link navigation remains the fallback.
 
-- Responsive layouts for desktop and mobile.
-- Native cross-page fade transitions in browsers that support the View Transition API; navigation still works in other browsers.
-- Project and service cards with an interactive preview panel.
-- Experience timeline and profile portrait (`profile.jpg`).
-- Three.js and Google Fonts are loaded from CDNs, so those visual assets require an internet connection.
+## Run Locally
 
-## Run locally
-
-From the portfolio folder, start a local server in PowerShell:
+Python 3 can serve the static files over HTTP. From the project directory, run this in PowerShell:
 
 ```powershell
 py -m http.server 8000
 ```
 
-Then open [http://localhost:8000/index.html](http://localhost:8000/index.html) in your browser. Serving the files over HTTP is recommended over opening them directly, especially for external scripts and page transitions.
+Open [http://localhost:8000/index.html](http://localhost:8000/index.html). Using a local server is recommended over opening the HTML files with `file://`.
 
-## Contact form setup
+## External Resources
 
-The home page form posts to Formspree, but its endpoint currently contains the placeholder `MY_FORM_ID`. Replace it with your Formspree form ID in `index.html` before expecting submissions to work.
+The site loads Google Fonts and Three.js from CDNs, so an internet connection is needed for those resources. The home page also loads its 3D font from the Three.js examples CDN.
 
-## Customize
+## Contact Form Configuration
 
-Edit the HTML files directly:
+The contact form submits using `fetch` to Formspree. Its current endpoint contains the placeholder `MY_FORM_ID`, so submissions will not work until it is replaced with the form ID from a configured Formspree form in `index.html`.
 
-- Hero copy, navigation, and contact form in `index.html`.
-- Project cards, experience entries, services, and skills in `projects.html`.
-- Colors, spacing, and motion in the embedded CSS in each page.
-- Social and resume links in the navigation and footer.
+## Updating the Site
 
-## Files
+- Edit the hero text, navigation, and contact form in `index.html`.
+- Edit project cards, experience entries, services, and skills in `projects.html`.
+- Update social and resume destinations in the relevant page links.
+- Adjust design tokens, responsive layouts, and motion in each page's embedded CSS.
+
+## Project Files
 
 ```text
-index.html
-projects.html
-profile.jpg
-Resume.pdf
-README.md
+index.html       Home page
+projects.html    Projects, experience, services, and skills
+profile.jpg      Portrait image
+Resume.pdf       Resume document
+README.md        Project documentation
 ```
-Things too add - to be continued
