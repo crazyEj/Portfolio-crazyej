@@ -360,10 +360,16 @@
     }
 
     .card.in-view {
-      animation: riseIn .6s cubic-bezier(.2, .7, .2, 1) forwards;
+      opacity: 1;
+      transform: translateY(0);
+      animation: riseIn .6s cubic-bezier(.2, .7, .2, 1);
     }
 
     @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1320,6 +1326,7 @@
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('mouseenter', () => {
         cardCache.set(card, card.getBoundingClientRect());
+        card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) translateY(-7px)';
       }, { passive: true });
       
       card.addEventListener('mousemove', e => {
@@ -1332,7 +1339,7 @@
           card.style.setProperty('--my', (py * 100) + '%');
           const rx = (py - 0.5) * -8;
           const ry = (px - 0.5) * 10;
-          card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+          card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-7px)`;
         }, 0);
       }, { passive: true });
       
