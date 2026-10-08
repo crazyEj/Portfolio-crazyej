@@ -619,6 +619,27 @@
       --timeline-axis: 154px;
     }
 
+    .tl-media {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: 0 0 0 1px rgba(214, 139, 95, 0.06), 0 16px 28px rgba(0, 0, 0, 0.18);
+      display: grid;
+      place-items: center;
+      margin-top: 2px;
+    }
+
+    .tl-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.82) contrast(1.08);
+    }
+
     .timeline::before {
       content: "";
       position: absolute;
@@ -634,8 +655,8 @@
 
     .tl-item {
       display: grid;
-      grid-template-columns: 130px 1fr;
-      gap: 24px;
+      grid-template-columns: 72px 150px minmax(0, 1fr);
+      gap: 18px 22px;
       padding: 24px 20px;
       border-bottom: 1px solid var(--hair);
       position: relative;
@@ -932,9 +953,14 @@
       }
 
       .tl-item {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: 52px 1fr;
+        gap: 12px 14px;
         padding-left: 32px;
+      }
+
+      .tl-media {
+        width: 44px;
+        height: 44px;
       }
 
       .tl-item::after,
@@ -1122,6 +1148,7 @@
       <div class="timeline">
 
         <div class="tl-item latest">
+          <div class="tl-media"><img src="profile.jpg" alt="CloudSwyft Global Systems, Inc."></div>
           <div class="tl-date">JUN — JUL 2026</div>
           <div>
             <div class="tl-role">Product &amp; Engineering Intern</div>
@@ -1133,6 +1160,7 @@
         </div>
 
         <div class="tl-item">
+          <div class="tl-media"><img src="profile.jpg" alt="Angry Orange"></div>
           <div class="tl-date">FEB — MAY 2026</div>
           <div>
             <div class="tl-role">Junior Data Analyst (Part-Time)</div>
@@ -1143,6 +1171,7 @@
         </div>
 
         <div class="tl-item">
+          <div class="tl-media"><img src="profile.jpg" alt="Chewy"></div>
           <div class="tl-date">FEB — MAR 2026</div>
           <div>
             <div class="tl-role">Junior Ecommerce (Part-Time)</div>
@@ -1153,6 +1182,7 @@
         </div>
 
         <div class="tl-item">
+          <div class="tl-media"><img src="profile.jpg" alt="100 Degree Café"></div>
           <div class="tl-date">SEP — OCT 2024</div>
           <div>
             <div class="tl-role">Freelance Web Developer</div>
@@ -1163,6 +1193,7 @@
         </div>
 
         <div class="tl-item">
+          <div class="tl-media"><img src="profile.jpg" alt="Saint Louis University"></div>
           <div class="tl-date">2023 — PRESENT</div>
           <div>
             <div class="tl-role">BS Computer Science</div>
